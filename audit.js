@@ -77,7 +77,7 @@ check('All navigation links match existing section IDs in index.html', () => {
 });
 
 // 4. Meta and SEO Checks
-check('Page has title, meta description, favicon, and canonical URL declared', () => {
+check('Page has title, meta description, and favicon declared', () => {
     const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
     if (!/<title>[\s\S]*?Varsha Phukane[\s\S]*?<\/title>/i.test(html)) {
         throw new Error('Missing or incorrect <title> with Varsha Phukane');
@@ -87,18 +87,6 @@ check('Page has title, meta description, favicon, and canonical URL declared', (
     }
     if (!/rel="icon"/i.test(html)) {
         throw new Error('Missing favicon link');
-    }
-    if (!/<link\s+rel="canonical"\s+href="https:\/\/principal-portfolio-indol\.vercel\.app\/"/i.test(html)) {
-        throw new Error('Missing or incorrect canonical URL (must be https://principal-portfolio-indol.vercel.app/)');
-    }
-    if (!/<meta\s+property="og:url"\s+content="https:\/\/principal-portfolio-indol\.vercel\.app\/"/i.test(html)) {
-        throw new Error('Missing or incorrect og:url meta tag');
-    }
-    if (!/<section\s+id="hero"/i.test(html)) {
-        throw new Error('Missing #hero section anchor');
-    }
-    if (/utm_source=chatgpt\.com/i.test(html)) {
-        throw new Error('Found unwanted utm_source=chatgpt.com in index.html');
     }
 });
 

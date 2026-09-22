@@ -148,11 +148,11 @@ function renderBeyondTitle() {
         container.innerHTML = person.cards.map(card => `
             <div class="glass-card-light p-6 sm:p-7 rounded-2xl border border-amber-900/10 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1">
                 <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors flex-shrink-0 shadow-sm">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors">
                         <i data-lucide="${card.icon}" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h4 class="text-lg sm:text-xl font-serif font-bold text-slate-900 tracking-wide">${card.role}</h4>
+                        <h4 class="text-lg font-bold font-serif tracking-wide text-slate-900">${card.role}</h4>
                         <span class="text-xs uppercase tracking-wider text-amber-800 font-semibold block">${card.subtitle}</span>
                     </div>
                 </div>
