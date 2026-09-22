@@ -13,7 +13,7 @@ const PRINCIPAL_DATA = {
         title: "Principal | Educational Leader | Mentor",
         roles: ["Principal", "Educational Leader", "Mentor"],
         oneLinePhilosophy: "Building schools where every learner is seen, challenged and inspired.",
-        heroPortrait: "assets/images/varsha_phukane.jpg",
+        heroPortrait: "assets/images/varsha_phukane_headshot.jpg",
         currentInstitution: "School Leadership",
         badges: ["Educational Leader", "Academic Excellence", "Child-Centric Pedagogy"]
     },
@@ -23,7 +23,7 @@ const PRINCIPAL_DATA = {
         heading: "Beyond the Principal’s Office",
         supportingLine: "A school leader is more than a designation.",
         narrative: "A school is not just an administrative building; it is a living community where young minds are nurtured, teachers are empowered, and possibilities are opened. Leadership in education is an act of stewardship—guiding people with empathy, conviction, and an enduring faith in human potential.",
-        portrait: "assets/images/varsha_phukane.jpg",
+        portrait: "assets/images/varsha_phukane_candid.jpg",
         portraitCaption: "Varsha Phukane — Principal, Educational Leader & Mentor",
         cards: [
             {
@@ -275,7 +275,7 @@ const PRINCIPAL_DATA = {
             {
                 category: "Principal with Students",
                 title: "Listening & Mentoring Conversations",
-                image: "assets/images/varsha_phukane.jpg",
+                image: "assets/images/varsha_phukane_candid.jpg",
                 caption: "Connecting warmly with students to listen to their aspirations and encourage their dreams."
             }
         ]
@@ -454,7 +454,7 @@ When choosing a school, parents naturally check facilities and exam ranks. But t
         quote: "Education is not about filling minds. It is about opening possibilities.",
         name: "Varsha Phukane",
         title: "Principal | Educational Leader",
-        portrait: "assets/images/varsha_phukane.jpg",
+        portrait: "assets/images/varsha_phukane_headshot.jpg",
         email: "principal.varshaphukane@example.com",
         linkedin: "https://linkedin.com/in/varsha-phukane",
         schoolWebsite: "https://schoolwebsite.edu",
