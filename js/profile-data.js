@@ -127,28 +127,28 @@ const PRINCIPAL_DATA = {
         subheading: "Measurable milestones of educational stewardship across students, teachers, and institutions.",
         stats: [
             {
-                value: 2500,
+                value: 8500,
                 suffix: "+",
                 label: "Students Impacted",
                 description: "Nurtured across formative academic years"
             },
             {
-                value: 150,
+                value: 700,
                 suffix: "+",
                 label: "Teachers Mentored",
                 description: "Empowered toward master pedagogy and leadership"
             },
             {
-                value: 12,
+                value: 20,
                 suffix: "+",
                 label: "Years in Education",
-                description: "Committed to transformative school excellence"
+                description: "Dedicated to transformative academic stewardship"
             },
             {
-                value: 25,
+                value: 33,
                 suffix: "+",
-                label: "Academic Initiatives",
-                description: "Pioneered across curriculum, culture, and technology"
+                label: "Years of Experience",
+                description: "Distinguished professional career in educational administration"
             }
         ],
         areas: [
