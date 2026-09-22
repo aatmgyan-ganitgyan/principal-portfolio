@@ -454,7 +454,7 @@ When choosing a school, parents naturally check facilities and exam ranks. But t
         quote: "Education is not about filling minds. It is about opening possibilities.",
         name: "Varsha Phukane",
         title: "Principal | Educational Leader",
-        portrait: "assets/images/varsha_phukane_headshot.jpg",
+        portrait: "assets/images/varsha_phukane_avatar.jpg",
         email: "principal.varshaphukane@example.com",
         linkedin: "https://linkedin.com/in/varsha-phukane",
         schoolWebsite: "https://schoolwebsite.edu",
