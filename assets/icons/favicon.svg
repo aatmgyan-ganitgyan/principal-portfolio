@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E7D3"/>
+      <stop offset="50%" stop-color="#C5A880"/>
+      <stop offset="100%" stop-color="#A08257"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1326"/>
+      <stop offset="100%" stop-color="#060B18"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Shield / Circle with Gold Border -->
+  <circle cx="32" cy="32" r="30" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="2.5"/>
+  <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(197, 168, 128, 0.3)" stroke-width="1" stroke-dasharray="2,2"/>
+  
+  <!-- Monogram VP for Varsha Phukane in Editorial Typography -->
+  <text x="32" y="38" 
+        font-family="'Playfair Display', Georgia, serif" 
+        font-size="20" 
+        font-weight="700" 
+        letter-spacing="1"
+        fill="url(#goldGrad)" 
+        text-anchor="middle">
+    VP
+  </text>
+  
+  <!-- Small Star / Sparkle Accent -->
+  <polygon points="32,12 33.5,15.5 37,16 34.2,18.5 35,22 32,20 29,22 29.8,18.5 27,16 30.5,15.5" fill="#E7D5BC"/>
+</svg>

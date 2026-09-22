@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varsha Phukane | Principal & Educational Leader</title>
+    <meta name="description" content="Official portfolio of Varsha Phukane — Principal, Educational Leader, and Mentor. Building schools where every learner is seen, challenged and inspired.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/icons/favicon.svg">
+
+    <!-- Open Graph / Social Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Varsha Phukane | Principal & Educational Leader">
+    <meta property="og:description" content="Official portfolio of Varsha Phukane — Principal, Educational Leader, and Mentor. Building schools where every learner is seen, challenged and inspired.">
+    <meta property="og:image" content="assets/images/varsha_phukane.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Varsha Phukane | Principal & Educational Leader">
+    <meta name="twitter:description" content="Official portfolio of Varsha Phukane — Principal, Educational Leader, and Mentor.">
+    <meta name="twitter:image" content="assets/images/varsha_phukane.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            deep: '#060B18',
+                            dark: '#0B1326',
+                            card: '#101B35',
+                            light: '#1A284D',
+                        },
+                        gold: {
+                            DEFAULT: '#C5A880',
+                            light: '#E7D5BC',
+                            dark: '#A08257',
+                            accent: '#DFB15B'
+                        },
+                        ivory: '#FAF9F5',
+                        cream: '#F5F3EC',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        editorial: ['Cormorant Garamond', 'Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+                        script: ['Alex Brush', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Mixed Aura Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-navy-deep text-slate-100 selection:bg-gold selection:text-navy-deep antialiased font-sans">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ----------------- TOP NAVIGATION ----------------- -->
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-nav py-4 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <!-- Brand / Name -->
+            <a href="#hero" class="flex items-center gap-3 group text-decoration-none flex-shrink-0">
+                <div class="w-10 h-10 rounded-full border border-gold/50 flex items-center justify-center bg-navy-card overflow-hidden flex-shrink-0 shadow-md">
+                    <img src="assets/images/varsha_phukane.jpg" alt="Varsha Phukane" class="w-full h-full object-cover object-[50%_12%]">
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="font-serif font-bold text-base tracking-wide text-white group-hover:text-gold transition-colors whitespace-nowrap">
+                        Varsha Phukane
+                    </span>
+                    <span class="text-[10px] tracking-widest uppercase text-slate-400 font-medium whitespace-nowrap">
+                        Principal | Educational Leader
+                    </span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu (Exactly 8 single-line items, whitespace-nowrap, perfectly aligned) -->
+            <div class="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-semibold tracking-widest uppercase">
+                <a href="#hero" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Home</a>
+                <a href="#journey" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Journey</a>
+                <a href="#philosophy" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Leadership</a>
+                <a href="#impact" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Impact</a>
+                <a href="#initiatives" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Initiatives</a>
+                <a href="#photo-story" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Stories</a>
+                <a href="#thoughts" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Thoughts</a>
+                <a href="#contact" class="nav-link text-slate-300 hover:text-gold transition-colors whitespace-nowrap py-1">Contact</a>
+            </div>
+
+            <!-- Action CTA & Mobile Button -->
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <button onclick="openContactModal()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase bg-gold text-navy-deep hover:bg-gold-accent hover:shadow-lg transition-all duration-300 whitespace-nowrap flex-shrink-0">
+                    <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                    <span>Connect</span>
+                </button>
+
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-300 hover:text-gold focus:outline-none" aria-label="Toggle navigation">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden mt-3 pt-4 border-t border-slate-800 bg-navy-dark/95 px-4 py-5 rounded-2xl space-y-3 text-center shadow-2xl">
+            <a href="#hero" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Home</a>
+            <a href="#the-person" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Beyond the Title</a>
+            <a href="#journey" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">My Journey</a>
+            <a href="#philosophy" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Leadership Philosophy</a>
+            <a href="#impact" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">School Impact</a>
+            <a href="#initiatives" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Signature Initiatives</a>
+            <a href="#photo-story" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Life @ School</a>
+            <a href="#beyond-school" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">The Human Side</a>
+            <a href="#thoughts" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">The Principal's Voice</a>
+            <a href="#contact" class="block text-sm font-semibold text-slate-200 hover:text-gold py-1">Contact & Inquire</a>
+            <div class="pt-2">
+                <button onclick="openContactModal()" class="w-full py-2.5 rounded-full text-xs font-bold tracking-wider uppercase bg-gold text-navy-deep">
+                    Get in Touch
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ----------------- 01. HERO | THE IDENTITY ----------------- -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 lg:px-14 overflow-hidden">
+        <!-- Ambient Glows -->
+        <div class="glow-orb-gold -top-24 -left-24 opacity-50"></div>
+        <div class="glow-orb-blue top-1/2 -right-32 opacity-60"></div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+            <!-- Left Narrative & Identity -->
+            <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2">
+                    <span class="section-tag">01 • Executive Leadership</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h1 id="hero-name" class="text-4xl sm:text-6xl xl:text-7xl font-serif font-bold text-white tracking-tight leading-tight">
+                        <span class="gold-gradient-text">Varsha Phukane</span>
+                    </h1>
+                    <p id="hero-titles" class="text-sm sm:text-base tracking-widest font-semibold uppercase text-gold-light/90">
+                        Principal | Educational Leader | Mentor
+                    </p>
+                </div>
+
+                <!-- One-line Philosophy -->
+                <div class="p-6 rounded-2xl glass-card-dark border-l-4 border-gold relative max-w-2xl mx-auto lg:mx-0">
+                    <p id="hero-philosophy" class="font-editorial italic text-xl sm:text-2xl text-slate-200 font-medium leading-relaxed">
+                        “Building schools where every learner is seen, challenged and inspired.”
+                    </p>
+                </div>
+
+                <!-- Action CTA Buttons -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="#journey" class="btn-gold">
+                        <span>MY JOURNEY</span>
+                        <i data-lucide="compass" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#impact" class="btn-outline-gold">
+                        <span>SCHOOL IMPACT</span>
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Badges -->
+                <div id="hero-badges" class="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-4">
+                    <!-- Hydrated via profile-data.js -->
+                </div>
+            </div>
+
+            <!-- Right Executive Portrait Frame -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-md aspect-[3/4] rounded-3xl p-3 bg-gradient-to-b from-gold/30 via-slate-800/40 to-transparent gold-border-glow shadow-2xl">
+                    <div class="w-full h-full rounded-2xl overflow-hidden relative group">
+                        <img id="hero-portrait" 
+                             src="assets/images/varsha_phukane.jpg" 
+                             alt="Principal Varsha Phukane" 
+                             class="w-full h-full object-cover object-[50%_15%] filter contrast-105 group-hover:scale-105 transition-all duration-700">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent"></div>
+                        
+                        <!-- Floating Credentials Card -->
+                        <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-card-dark border border-gold/30">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center text-gold">
+                                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gold uppercase tracking-wider font-bold">Varsha Phukane</div>
+                                    <div class="text-sm font-semibold text-white">Principal | Educational Leader</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtle Scroll Indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-slate-500 hover:text-gold transition-colors">
+            <a href="#the-person" class="flex flex-col items-center gap-1 text-xs uppercase tracking-widest font-medium">
+                <span>Scroll to Explore</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ----------------- 02. BEYOND THE TITLE ----------------- -->
+    <section id="the-person" class="py-24 px-6 lg:px-14 bg-ivory text-slate-900 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="section-tag section-tag-light">02 • The Person</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-slate-900 mb-2">
+                    Beyond the Principal’s Office
+                </h2>
+                <p class="text-base text-amber-900 font-semibold tracking-wide mb-4">
+                    “A school leader is more than a designation.”
+                </p>
+                <div class="w-16 h-1 bg-gold mx-auto mb-6"></div>
+                <p id="person-lead-story" class="dropcap font-editorial text-xl sm:text-2xl text-slate-700 leading-relaxed italic">
+                    <!-- Hydrated via profile-data.js -->
+                </p>
+            </div>
+
+            <!-- Content Grid: Photography + 4 Storytelling Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <!-- Photography alongside text -->
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
+                        <img id="person-candid-img" 
+                             src="assets/images/varsha_phukane.jpg" 
+                             alt="Varsha Phukane — Principal" 
+                             class="w-full aspect-[4/5] object-cover object-[50%_15%]">
+                        <div class="p-4 bg-white/95 border-t border-slate-200">
+                            <p id="person-candid-caption" class="text-xs text-slate-600 font-medium italic text-center">
+                                Varsha Phukane — Principal & Educational Leader
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Editorial Cards: EDUCATOR, LEADER, MENTOR, LEARNER -->
+                <div id="person-cards-container" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Hydrated via profile-data.js -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 03. MY JOURNEY ----------------- -->
+    <section id="journey" class="py-24 px-6 lg:px-14 bg-navy-dark relative overflow-hidden">
+        <div class="glow-orb-gold -bottom-24 -right-24 opacity-40"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="section-tag">03 • Timeline</span>
+                    <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white mb-2">
+                        From Classroom to Leadership
+                    </h2>
+                    <p class="text-sm font-medium text-slate-400 max-w-xl">
+                        A purposeful trajectory of pedagogical transformation, institutional development, and vision.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gold font-semibold uppercase tracking-wider">
+                    <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+                    <span>Scroll horizontally through milestones</span>
+                </div>
+            </div>
+
+            <!-- Horizontal Cinematic Timeline -->
+            <div id="journey-timeline-container" class="horizontal-timeline-container gap-6 pt-4 pb-8">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 04. LEADERSHIP PHILOSOPHY ----------------- -->
+    <section id="philosophy" class="py-24 px-6 lg:px-14 bg-cream text-slate-900 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="section-tag section-tag-light">04 • Philosophy</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-slate-900 mb-3">
+                    Leadership Philosophy
+                </h2>
+                <p id="philosophy-quote" class="font-editorial text-2xl sm:text-3xl italic text-slate-800 leading-snug">
+                    “What I believe”
+                </p>
+                <div class="w-16 h-1 bg-gold mx-auto mt-4"></div>
+            </div>
+
+            <!-- 4 Pillars Grid -->
+            <div id="philosophy-pillars-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 05. IMPACT ----------------- -->
+    <section id="impact" class="py-24 px-6 lg:px-14 bg-navy-deep relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="section-tag">05 • Quantitative Milestones</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white mb-4">
+                    Impact That Can Be Seen.
+                </h2>
+                <p class="text-sm text-slate-400 max-w-lg mx-auto">
+                    Measurable milestones reflecting focused commitment on academic attainment and institutional culture.
+                </p>
+            </div>
+
+            <!-- Metric Counters -->
+            <div id="impact-metrics-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+
+            <!-- Areas of Impact -->
+            <div class="glass-card-dark p-8 rounded-3xl border border-slate-800">
+                <h4 class="text-xs uppercase tracking-widest font-bold text-gold text-center mb-6">
+                    AREAS OF IMPACT
+                </h4>
+                <div id="impact-areas-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Hydrated via profile-data.js -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 06. SIGNATURE INITIATIVES ----------------- -->
+    <section id="initiatives" class="py-24 px-6 lg:px-14 bg-ivory text-slate-900 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="section-tag section-tag-light">06 • Institutional Transformation</span>
+                    <h2 class="text-3xl sm:text-5xl font-serif font-bold text-slate-900 mb-2">
+                        Signature Initiatives
+                    </h2>
+                    <p class="text-sm font-medium text-slate-600 max-w-xl">
+                        Strategic institutional programs documented with structured Challenge → Action → Result case studies.
+                    </p>
+                </div>
+                <div class="text-xs font-semibold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
+                    <span>Click any card for full details</span>
+                </div>
+            </div>
+
+            <!-- 5 Large Cards Grid -->
+            <div id="initiatives-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 07. LIFE @ SCHOOL ----------------- -->
+    <section id="photo-story" class="py-24 px-6 lg:px-14 bg-navy-dark relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="section-tag">07 • Candid Culture</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white mb-3">
+                    A School is a Living Community.
+                </h2>
+                <p class="text-sm text-slate-400">
+                    Unscripted, genuine photographs celebrating the daily pulse, warmth, and spirit of learning.
+                </p>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div id="photo-filters" class="flex flex-wrap justify-center gap-2 mb-12">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+
+            <!-- Photo Story Grid -->
+            <div id="photo-story-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 08. BEYOND SCHOOL ----------------- -->
+    <section id="beyond-school" class="py-24 px-6 lg:px-14 bg-navy-deep relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="section-tag">08 • The Human Dimension</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white mb-3">
+                    The Human Side
+                </h2>
+                <p class="text-sm text-slate-400">
+                    The intellectual, personal, and cultural pursuits that inform thoughtful leadership.
+                </p>
+            </div>
+
+            <!-- 5 Cards Grid -->
+            <div id="beyond-school-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 09. THE PRINCIPAL'S VOICE ----------------- -->
+    <section id="thoughts" class="py-24 px-6 lg:px-14 bg-cream text-slate-900 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="section-tag section-tag-light">09 • Intellectual Identity</span>
+                    <h2 class="text-3xl sm:text-5xl font-serif font-bold text-slate-900 mb-2">
+                        The Principal’s Voice
+                    </h2>
+                    <p class="text-sm font-medium text-slate-600 max-w-xl">
+                        Reflective essays on pedagogy, institutional culture, and the human heart of education.
+                    </p>
+                </div>
+                <div class="text-xs font-semibold text-amber-900 uppercase tracking-wider flex items-center gap-1">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                    <span>2–4 Minute Editorial Reads</span>
+                </div>
+            </div>
+
+            <!-- Thoughts Cards Grid -->
+            <div id="thoughts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Hydrated via profile-data.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 10. FINAL SIGNATURE SECTION ----------------- -->
+    <section id="contact" class="relative py-28 px-6 lg:px-14 bg-navy-deep text-white overflow-hidden">
+        <div class="glow-orb-gold top-1/4 left-1/2 -translate-x-1/2 opacity-30"></div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10 space-y-8">
+            <span class="section-tag">10 • Final Signature</span>
+
+            <div class="w-28 h-28 mx-auto rounded-full p-1.5 border-2 border-gold/50 shadow-2xl overflow-hidden bg-navy-card">
+                <img id="signature-portrait" 
+                     src="assets/images/varsha_phukane.jpg" 
+                     alt="Varsha Phukane" 
+                     class="w-full h-full object-cover object-[50%_15%]">
+            </div>
+
+            <blockquote id="signature-quote" class="font-editorial text-3xl sm:text-4xl lg:text-5xl italic text-slate-100 font-medium leading-tight max-w-3xl mx-auto">
+                “Education is not about filling minds. It is about opening possibilities.”
+            </blockquote>
+
+            <div class="space-y-2 pt-2">
+                <div id="signature-name" class="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text tracking-wide">
+                    Varsha Phukane
+                </div>
+                <p id="signature-subtitle" class="text-sm uppercase tracking-widest text-slate-400 font-medium">
+                    Principal | Educational Leader
+                </p>
+            </div>
+
+            <!-- Action Buttons: EMAIL, LINKEDIN, SCHOOL WEBSITE -->
+            <div class="pt-6 flex flex-wrap items-center justify-center gap-4">
+                <a id="signature-email" href="mailto:principal.varshaphukane@example.com" class="btn-gold">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    <span>EMAIL</span>
+                </a>
+                <a id="signature-linkedin" href="https://linkedin.com/in/varsha-phukane" target="_blank" rel="noopener noreferrer" class="btn-outline-gold">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    <span>LINKEDIN</span>
+                </a>
+                <a id="signature-school-link" href="https://schoolwebsite.edu" target="_blank" rel="noopener noreferrer" class="btn-outline-gold">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                    <span>SCHOOL WEBSITE</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------- 14. FOOTER ----------------- -->
+    <footer class="py-12 px-6 lg:px-14 bg-navy-dark border-t border-slate-800 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <div class="font-serif text-base font-bold text-white mb-0.5">Varsha Phukane</div>
+                <div class="text-[11px] uppercase tracking-wider text-slate-400">Principal | Educational Leader</div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="flex flex-wrap items-center justify-center gap-5 text-slate-300">
+                <a href="#hero" class="hover:text-gold transition-colors">Home</a>
+                <a href="#journey" class="hover:text-gold transition-colors">Journey</a>
+                <a href="#philosophy" class="hover:text-gold transition-colors">Leadership</a>
+                <a href="#impact" class="hover:text-gold transition-colors">Impact</a>
+                <a href="#initiatives" class="hover:text-gold transition-colors">Initiatives</a>
+                <a href="#photo-story" class="hover:text-gold transition-colors">Stories</a>
+                <a href="#thoughts" class="hover:text-gold transition-colors">Thoughts</a>
+            </div>
+
+            <!-- Copyright -->
+            <div id="footer-copyright" class="text-center md:text-right text-slate-500">
+                Copyright © 2026 Varsha Phukane. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         MODALS SYSTEM
+         ========================================================================== -->
+
+    <!-- 1. Initiative Modal (Challenge → Action → Result) -->
+    <div id="initiative-modal" class="modal-backdrop">
+        <div class="modal-content p-8 max-w-3xl">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-700/80 mb-6">
+                <div>
+                    <span id="modal-init-category" class="text-xs uppercase font-bold tracking-wider text-gold">CARD</span>
+                    <h3 id="modal-init-title" class="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">Initiative Title</h3>
+                </div>
+                <button data-close-modal class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Challenge -->
+                <div class="p-5 rounded-xl bg-red-950/30 border border-red-900/40">
+                    <div class="flex items-center gap-2 text-red-400 font-bold text-xs uppercase tracking-wider mb-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                        <span>CHALLENGE</span>
+                    </div>
+                    <p id="modal-init-challenge" class="text-slate-300 text-sm leading-relaxed"></p>
+                </div>
+
+                <!-- Action -->
+                <div class="p-5 rounded-xl bg-amber-950/30 border border-amber-900/40">
+                    <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-2">
+                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                        <span>ACTION</span>
+                    </div>
+                    <p id="modal-init-action" class="text-slate-300 text-sm leading-relaxed"></p>
+                </div>
+
+                <!-- Result -->
+                <div class="p-5 rounded-xl bg-emerald-950/30 border border-emerald-900/40">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider mb-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                        <span>RESULT</span>
+                    </div>
+                    <p id="modal-init-result" class="text-slate-300 text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div class="pt-6 mt-6 border-t border-slate-800 flex justify-end">
+                <button data-close-modal class="btn-outline-gold text-xs py-2 px-6">Close Case Study</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Thoughts / Article Reader Modal -->
+    <div id="article-modal" class="modal-backdrop">
+        <div class="modal-content article-reader p-8 sm:p-12 max-w-3xl">
+            <div class="flex items-center justify-between pb-4 border-b border-amber-900/20 mb-6">
+                <div class="flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-amber-800">
+                    <i data-lucide="feather" class="w-4 h-4"></i>
+                    <span>The Principal’s Voice</span>
+                </div>
+                <button data-close-modal class="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div id="modal-article-body" class="font-sans leading-relaxed text-slate-800">
+                <!-- Hydrated article content -->
+            </div>
+
+            <div class="pt-8 mt-8 border-t border-amber-900/20 flex items-center justify-between">
+                <div class="text-xs text-slate-500 italic">Varsha Phukane — Principal</div>
+                <button data-close-modal class="px-5 py-2 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-amber-800 transition-colors">
+                    Done Reading
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Photo Story Lightbox Modal -->
+    <div id="lightbox-modal" class="modal-backdrop">
+        <div class="relative max-w-5xl w-full p-4 flex flex-col items-center">
+            <button data-close-modal class="absolute -top-12 right-0 p-2 text-slate-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+
+            <div class="relative w-full aspect-[16/10] max-h-[75vh] rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+                <img id="lightbox-img" src="" alt="Photo Story" class="max-w-full max-h-full object-contain">
+                
+                <!-- Prev / Next Controls -->
+                <button onclick="lightboxPrev()" class="absolute left-4 p-3 rounded-full bg-black/60 text-white hover:bg-gold hover:text-navy-deep transition-all" aria-label="Previous image">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button onclick="lightboxNext()" class="absolute right-4 p-3 rounded-full bg-black/60 text-white hover:bg-gold hover:text-navy-deep transition-all" aria-label="Next image">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Lightbox Caption & Info -->
+            <div class="w-full mt-4 flex items-center justify-between text-slate-200 px-2">
+                <div>
+                    <h4 id="lightbox-title" class="text-lg font-serif font-bold text-white"></h4>
+                    <p id="lightbox-caption" class="text-xs text-slate-400"></p>
+                </div>
+                <span id="lightbox-counter" class="text-xs text-gold font-bold tracking-wider px-3 py-1 rounded-full bg-slate-900 border border-slate-700"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Contact / Inquiry Modal -->
+    <div id="contact-modal" class="modal-backdrop">
+        <div class="modal-content p-8 max-w-lg">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gold">Direct Connect</span>
+                    <h3 class="text-2xl font-serif font-bold text-white mt-1">Connect with Varsha Phukane</h3>
+                </div>
+                <button data-close-modal class="p-2 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <form id="dialog-contact-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Your Name / Organization</label>
+                    <input type="text" required placeholder="e.g. Academic Council Member, Parent" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:border-gold focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Email Address</label>
+                    <input type="email" required placeholder="e.g. name@institution.edu" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:border-gold focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Subject</label>
+                    <select class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-sm focus:border-gold focus:outline-none">
+                        <option>Academic Mentorship & Guidance</option>
+                        <option>Keynote Address / Seminar Invitation</option>
+                        <option>Institutional Development & Advisory</option>
+                        <option>Parent Consultation / General Inquiry</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Message</label>
+                    <textarea rows="4" required placeholder="Write your message to the Principal..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:border-gold focus:outline-none"></textarea>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-gold justify-center text-sm py-3">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/profile-data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+/**
+ * ==========================================================================
+ * PRINCIPAL PORTFOLIO — MAIN INTERACTIVITY & RENDERING ENGINE
+ * Principal: Varsha Phukane
+ * ==========================================================================
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initScrollProgress();
+    initNavbar();
+    renderHero();
+    renderBeyondTitle();
+    renderJourney();
+    renderPhilosophy();
+    renderImpact();
+    renderInitiatives();
+    renderLifeAtSchool();
+    renderBeyondSchool();
+    renderThoughts();
+    renderSignature();
+    initModals();
+    initCounters();
+    lucide.createIcons();
+});
+
+/* ----------------- 00. SCROLL PROGRESS & NAVBAR ----------------- */
+function initScrollProgress() {
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalHeight) * 100;
+        if (progressBar) {
+            progressBar.style.width = `${progress}%`;
+        }
+    });
+}
+
+function initNavbar() {
+    const navbar = document.getElementById('main-nav');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // Scroll state
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+            navbar.classList.add('shadow-xl', 'py-3.5');
+            navbar.classList.remove('py-5');
+        } else {
+            navbar.classList.remove('shadow-xl', 'py-3.5');
+            navbar.classList.add('py-5');
+        }
+        highlightActiveSection();
+    });
+
+    // Mobile menu toggle
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.setAttribute('data-lucide', 'menu');
+            } else {
+                icon.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons();
+        });
+
+        // Close on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
+        });
+    }
+}
+
+function highlightActiveSection() {
+    const sections = document.querySelectorAll('section[id]');
+    const scrollY = window.scrollY + 180;
+
+    sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop;
+        const sectionId = current.getAttribute('id');
+        const correspondingLink = document.querySelector(`.nav-link[href*="${sectionId}"]`);
+
+        if (correspondingLink) {
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                correspondingLink.classList.add('text-gold', 'font-semibold');
+                correspondingLink.classList.remove('text-slate-300');
+            } else {
+                correspondingLink.classList.remove('text-gold', 'font-semibold');
+                correspondingLink.classList.add('text-slate-300');
+            }
+        }
+    });
+}
+
+/* ----------------- 01. HERO SECTION ----------------- */
+function renderHero() {
+    const data = PRINCIPAL_DATA.identity;
+    const heroName = document.getElementById('hero-name');
+    const heroTitles = document.getElementById('hero-titles');
+    const heroPhilosophy = document.getElementById('hero-philosophy');
+    const heroPortrait = document.getElementById('hero-portrait');
+    const heroBadges = document.getElementById('hero-badges');
+
+    if (heroName) {
+        heroName.innerHTML = `<span class="gold-gradient-text">${data.name}</span>`;
+    }
+    if (heroTitles) {
+        heroTitles.textContent = data.title;
+    }
+    if (heroPhilosophy) {
+        heroPhilosophy.textContent = `“${data.oneLinePhilosophy}”`;
+    }
+    if (heroPortrait) {
+        heroPortrait.src = data.heroPortrait;
+        heroPortrait.alt = `${data.name} — Principal`;
+    }
+    if (heroBadges && data.badges) {
+        heroBadges.innerHTML = data.badges.map(badge => `
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-amber-500/10 text-amber-200 border border-amber-500/25">
+                <i data-lucide="award" class="w-3.5 h-3.5 text-gold"></i> ${badge}
+            </span>
+        `).join('');
+    }
+}
+
+/* ----------------- 02. BEYOND THE TITLE ----------------- */
+function renderBeyondTitle() {
+    const person = PRINCIPAL_DATA.beyondTitle;
+    const container = document.getElementById('person-cards-container');
+    const leadStory = document.getElementById('person-lead-story');
+    const candidImg = document.getElementById('person-candid-img');
+    const candidCaption = document.getElementById('person-candid-caption');
+
+    if (leadStory) leadStory.textContent = person.narrative;
+    if (candidImg) {
+        candidImg.src = person.portrait;
+        candidImg.alt = person.portraitCaption;
+    }
+    if (candidCaption) candidCaption.textContent = person.portraitCaption;
+
+    if (container && person.cards) {
+        container.innerHTML = person.cards.map(card => `
+            <div class="glass-card-light p-6 sm:p-7 rounded-2xl border border-amber-900/10 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                        <i data-lucide="${card.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold font-serif tracking-wide text-slate-900">${card.role}</h4>
+                        <span class="text-xs uppercase tracking-wider text-amber-800 font-semibold block">${card.subtitle}</span>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-sm leading-relaxed">${card.description}</p>
+            </div>
+        `).join('');
+    }
+}
+
+/* ----------------- 03. MY JOURNEY ----------------- */
+function renderJourney() {
+    const journey = PRINCIPAL_DATA.journey;
+    const container = document.getElementById('journey-timeline-container');
+    if (!container || !journey.milestones) return;
+
+    container.innerHTML = journey.milestones.map((item) => `
+        <div class="timeline-card glass-card-dark p-7 rounded-2xl relative border border-slate-800 hover:border-gold/50 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-500/15 text-gold-light border border-gold/30">
+                        ${item.year}
+                    </span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+                        ${item.institution}
+                    </span>
+                </div>
+                <h4 class="text-xl font-serif font-bold text-white mb-2 group-hover:text-gold transition-colors">
+                    ${item.position}
+                </h4>
+                <p class="text-slate-200 text-sm leading-relaxed mb-4 border-l-2 border-gold/60 pl-3 italic font-editorial text-base">
+                    "${item.achievement}"
+                </p>
+            </div>
+            <p class="text-slate-400 text-xs leading-relaxed pt-3 border-t border-slate-800/80">
+                ${item.context}
+            </p>
+        </div>
+    `).join('');
+}
+
+/* ----------------- 04. LEADERSHIP PHILOSOPHY ----------------- */
+function renderPhilosophy() {
+    const phil = PRINCIPAL_DATA.philosophy;
+    const quoteEl = document.getElementById('philosophy-quote');
+    const container = document.getElementById('philosophy-pillars-container');
+
+    if (quoteEl) quoteEl.textContent = `“${phil.quote}”`;
+
+    if (container && phil.pillars) {
+        container.innerHTML = phil.pillars.map(pillar => `
+            <div class="p-8 rounded-2xl bg-white shadow-sm border border-slate-200/80 hover:shadow-xl hover:border-gold/50 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl font-serif font-bold text-gold/60 mb-2 group-hover:text-amber-700 transition-colors">
+                        ${pillar.num}
+                    </div>
+                    <h4 class="text-xl font-serif font-bold text-slate-900 mb-1 tracking-wide">
+                        ${pillar.title}
+                    </h4>
+                    <p class="text-xs uppercase tracking-wider font-semibold text-amber-800 mb-4">
+                        ${pillar.statement}
+                    </p>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        ${pillar.description}
+                    </p>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+/* ----------------- 05. IMPACT METRICS ----------------- */
+function renderImpact() {
+    const impact = PRINCIPAL_DATA.impact;
+    const metricsContainer = document.getElementById('impact-metrics-container');
+    const areasContainer = document.getElementById('impact-areas-container');
+
+    if (metricsContainer && impact.stats) {
+        metricsContainer.innerHTML = impact.stats.map(stat => `
+            <div class="glass-card-dark p-8 rounded-2xl text-center border border-slate-800 hover:border-gold/50 transition-all hover:-translate-y-1">
+                <div class="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold text-white mb-2 flex items-center justify-center">
+                    <span class="counter-val text-amber-300" data-target="${stat.value}">0</span>
+                    <span class="text-gold">${stat.suffix}</span>
+                </div>
+                <h4 class="text-base sm:text-lg font-bold text-slate-100 mb-1">${stat.label}</h4>
+                <p class="text-xs text-slate-400 max-w-xs mx-auto">${stat.description}</p>
+            </div>
+        `).join('');
+    }
+
+    if (areasContainer && impact.areas) {
+        areasContainer.innerHTML = impact.areas.map(area => `
+            <div class="px-4 py-3.5 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-gold/40 transition-all flex items-center gap-3">
+                <div class="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center text-gold flex-shrink-0">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-200 tracking-wide">${area}</span>
+            </div>
+        `).join('');
+    }
+}
+
+function initCounters() {
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.counter-val');
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 1800; // ms
+                    const stepTime = 25;
+                    const steps = duration / stepTime;
+                    const increment = target / steps;
+                    let current = 0;
+
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, stepTime);
+                });
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    const impactSection = document.getElementById('impact');
+    if (impactSection) observer.observe(impactSection);
+}
+
+/* ----------------- 06. SIGNATURE INITIATIVES ----------------- */
+function renderInitiatives() {
+    const data = PRINCIPAL_DATA.initiatives;
+    const container = document.getElementById('initiatives-container');
+    if (!container || !data.cards) return;
+
+    container.innerHTML = data.cards.map(item => `
+        <div class="initiative-card glass-card-light rounded-2xl p-8 border border-slate-200 bg-white hover:shadow-2xl transition-all cursor-pointer flex flex-col justify-between"
+             onclick="openInitiativeModal('${item.id}')">
+            <div>
+                <div class="flex items-center justify-between gap-2 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900">
+                        ${item.cardNum}
+                    </span>
+                    <span class="text-xs text-amber-800 font-semibold flex items-center gap-1">
+                        <span>Details</span>
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                    </span>
+                </div>
+                <h4 class="text-2xl font-serif font-bold text-slate-900 mb-3 hover:text-amber-800 transition-colors">
+                    ${item.title}
+                </h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    ${item.summary}
+                </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-amber-800 font-semibold text-xs uppercase tracking-wider">
+                <span>View Full Case Study</span>
+                <span class="text-slate-500 font-medium lowercase">challenge → action → result</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ----------------- 07. LIFE @ SCHOOL ----------------- */
+let currentCategory = 'all';
+
+function renderLifeAtSchool() {
+    const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
+    const container = document.getElementById('photo-story-grid');
+    const filterContainer = document.getElementById('photo-filters');
+    if (!container) return;
+
+    // Categories
+    const categories = ['all', ...new Set(gallery.map(item => item.category))];
+    if (filterContainer) {
+        filterContainer.innerHTML = categories.map(cat => `
+            <button class="filter-pill ${cat === currentCategory ? 'active' : ''}" onclick="filterPhotos('${cat}')">
+                ${cat === 'all' ? 'All Moments' : cat}
+            </button>
+        `).join('');
+    }
+
+    const filtered = currentCategory === 'all'
+        ? gallery
+        : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
+
+    container.innerHTML = filtered.map((item, idx) => `
+        <div class="photo-card aspect-[4/3] rounded-xl overflow-hidden relative group shadow-md" onclick="openLightbox(${idx})">
+            <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover">
+            <div class="photo-overlay">
+                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-300 mb-1">${item.category}</span>
+                <h5 class="text-lg font-serif font-bold text-white">${item.title}</h5>
+                <p class="text-xs text-slate-300 mt-1 line-clamp-2">${item.caption}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.filterPhotos = function(category) {
+    currentCategory = category;
+    renderLifeAtSchool();
+    lucide.createIcons();
+};
+
+/* ----------------- 08. BEYOND SCHOOL ----------------- */
+function renderBeyondSchool() {
+    const list = PRINCIPAL_DATA.beyondSchool.cards;
+    const container = document.getElementById('beyond-school-container');
+    if (!container) return;
+
+    container.innerHTML = list.map(item => `
+        <div class="glass-card-dark p-8 rounded-2xl border border-slate-800 hover:border-gold/40 transition-all flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-gold">
+                        <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-gold block">${item.category}</span>
+                        <h4 class="text-xl font-serif font-bold text-white">${item.title}</h4>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">${item.description}</p>
+                <div class="space-y-2 mb-6">
+                    ${item.highlights.map(h => `
+                        <div class="flex items-start gap-2 text-xs text-slate-400">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold flex-shrink-0 mt-0.5"></i>
+                            <span>${h}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="h-32 rounded-xl overflow-hidden border border-slate-800/80">
+                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ----------------- 09. THE PRINCIPAL'S VOICE ----------------- */
+function renderThoughts() {
+    const articles = PRINCIPAL_DATA.thoughts.articles;
+    const container = document.getElementById('thoughts-container');
+    if (!container) return;
+
+    container.innerHTML = articles.map(article => `
+        <article class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl border border-slate-200 transition-all flex flex-col justify-between cursor-pointer group"
+                 onclick="openArticleModal('${article.id}')">
+            <div>
+                <div class="flex items-center justify-between text-xs text-slate-500 font-semibold mb-3">
+                    <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/60">${article.date}</span>
+                    <span class="flex items-center gap-1 text-slate-500"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${article.readTime}</span>
+                </div>
+                <h4 class="text-2xl font-serif font-bold text-slate-900 mb-3 group-hover:text-amber-800 transition-colors">
+                    ${article.title}
+                </h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3">
+                    ${article.description}
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs uppercase tracking-wider font-bold text-amber-900">
+                <span>Read Article</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </div>
+        </article>
+    `).join('');
+}
+
+/* ----------------- 10. FINAL SIGNATURE & FOOTER ----------------- */
+function renderSignature() {
+    const sig = PRINCIPAL_DATA.signature;
+    const quoteEl = document.getElementById('signature-quote');
+    const nameEl = document.getElementById('signature-name');
+    const subtitleEl = document.getElementById('signature-subtitle');
+    const portraitEl = document.getElementById('signature-portrait');
+    const emailLink = document.getElementById('signature-email');
+    const linkedinLink = document.getElementById('signature-linkedin');
+    const schoolLink = document.getElementById('signature-school-link');
+    const copyrightEl = document.getElementById('footer-copyright');
+
+    if (quoteEl) quoteEl.textContent = `“${sig.quote}”`;
+    if (nameEl) nameEl.textContent = sig.name;
+    if (subtitleEl) subtitleEl.textContent = sig.title;
+    if (portraitEl && sig.portrait) {
+        portraitEl.src = sig.portrait;
+        portraitEl.alt = `${sig.name} — Principal`;
+    }
+    if (emailLink) {
+        if (sig.email) emailLink.href = `mailto:${sig.email}`;
+        const span = emailLink.querySelector('span');
+        if (span) span.textContent = "EMAIL";
+    }
+    if (linkedinLink && sig.linkedin) linkedinLink.href = sig.linkedin;
+    if (schoolLink && sig.schoolWebsite) schoolLink.href = sig.schoolWebsite;
+    if (copyrightEl && sig.copyrightYear && sig.name) {
+        copyrightEl.textContent = `Copyright © ${sig.copyrightYear} ${sig.name}. All rights reserved.`;
+    }
+}
+
+/* ----------------- MODALS ----------------- */
+function initModals() {
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeAllModals();
+            }
+        });
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeAllModals();
+        }
+    });
+
+    document.querySelectorAll('[data-close-modal]').forEach(btn => {
+        btn.addEventListener('click', closeAllModals);
+    });
+
+    // Contact modal submit
+    const contactForm = document.getElementById('dialog-contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button[type="submit"]');
+            btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 inline mr-1"></i> Message Sent Successfully`;
+            btn.classList.add('bg-emerald-600', 'text-white');
+            lucide.createIcons();
+            setTimeout(() => {
+                closeAllModals();
+                contactForm.reset();
+                btn.innerHTML = `Send Message`;
+                btn.classList.remove('bg-emerald-600', 'text-white');
+            }, 1800);
+        });
+    }
+}
+
+function closeAllModals() {
+    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('active'));
+    document.body.style.overflow = '';
+}
+
+// 1. Initiative Modal
+window.openInitiativeModal = function(initiativeId) {
+    const item = PRINCIPAL_DATA.initiatives.cards.find(i => i.id === initiativeId);
+    if (!item) return;
+
+    const modal = document.getElementById('initiative-modal');
+    document.getElementById('modal-init-title').textContent = item.title;
+    document.getElementById('modal-init-category').textContent = item.cardNum;
+    document.getElementById('modal-init-challenge').textContent = item.challenge;
+    document.getElementById('modal-init-action').textContent = item.action;
+    document.getElementById('modal-init-result').textContent = item.result;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    lucide.createIcons();
+};
+
+// 2. Article Reader Modal
+window.openArticleModal = function(articleId) {
+    const article = PRINCIPAL_DATA.thoughts.articles.find(a => a.id === articleId);
+    if (!article) return;
+
+    const modal = document.getElementById('article-modal');
+    const contentEl = document.getElementById('modal-article-body');
+
+    let html = article.content
+        .replace(/^### (.*$)/gim, '<h3 class="text-2xl font-serif font-bold text-slate-900 mt-6 mb-3">$1</h3>')
+        .replace(/^#### (.*$)/gim, '<h4 class="text-xl font-serif font-semibold text-amber-900 mt-5 mb-2">$1</h4>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>')
+        .replace(/^\> (.*$)/gim, '<blockquote class="border-l-4 border-amber-600 pl-4 py-1 italic text-slate-700 my-4">$1</blockquote>')
+        .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-slate-700">$1</li>')
+        .replace(/\n\n/g, '</p><p class="mb-4 text-slate-700 text-base leading-relaxed">');
+
+    html = `<div class="prose max-w-none"><p class="mb-4 text-slate-700 text-base leading-relaxed">${html}</p></div>`;
+
+    contentEl.innerHTML = html;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    lucide.createIcons();
+};
+
+// 3. Photo Lightbox
+let activeLightboxIndex = 0;
+window.openLightbox = function(index) {
+    activeLightboxIndex = index;
+    updateLightboxContent();
+    const modal = document.getElementById('lightbox-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+function updateLightboxContent() {
+    const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
+    const filtered = currentCategory === 'all' 
+        ? gallery 
+        : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
+
+    const item = filtered[activeLightboxIndex];
+    if (!item) return;
+
+    document.getElementById('lightbox-img').src = item.image;
+    document.getElementById('lightbox-title').textContent = item.title;
+    document.getElementById('lightbox-caption').textContent = item.caption;
+    document.getElementById('lightbox-counter').textContent = `${activeLightboxIndex + 1} / ${filtered.length}`;
+}
+
+window.lightboxPrev = function() {
+    const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
+    const filtered = currentCategory === 'all' 
+        ? gallery 
+        : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
+    activeLightboxIndex = (activeLightboxIndex - 1 + filtered.length) % filtered.length;
+    updateLightboxContent();
+};
+
+window.lightboxNext = function() {
+    const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
+    const filtered = currentCategory === 'all' 
+        ? gallery 
+        : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
+    activeLightboxIndex = (activeLightboxIndex + 1) % filtered.length;
+    updateLightboxContent();
+};
+
+// 4. Contact Modal
+window.openContactModal = function() {
+    const modal = document.getElementById('contact-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
