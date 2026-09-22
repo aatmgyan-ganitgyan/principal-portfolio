@@ -23,7 +23,7 @@ const PRINCIPAL_DATA = {
         heading: "Beyond the Principal’s Office",
         supportingLine: "A school leader is more than a designation.",
         narrative: "A school is not just an administrative building; it is a living community where young minds are nurtured, teachers are empowered, and possibilities are opened. Leadership in education is an act of stewardship—guiding people with empathy, conviction, and an enduring faith in human potential.",
-        portrait: "assets/images/varsha_phukane_candid_portrait.jpg?v=2",
+        portrait: "assets/images/varsha_phukane_candid_portrait.jpg?v=6",
         portraitCaption: "Varsha Phukane — Principal, Educational Leader & Mentor",
         cards: [
             {
