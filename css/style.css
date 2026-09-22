@@ -85,6 +85,15 @@ section[id] {
     font-weight: 700;
 }
 
+@media (max-width: 640px) {
+    .dropcap::first-letter {
+        font-size: 2.6rem;
+        line-height: 0.85;
+        padding-right: 0.45rem;
+        padding-top: 0.1rem;
+    }
+}
+
 /* Gold Gradient Text */
 .gold-gradient-text {
     background: linear-gradient(135deg, #F3E7D3 0%, #C5A880 50%, #E6D2B5 100%);
@@ -255,9 +264,11 @@ section[id] {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--color-gold) rgba(255, 255, 255, 0.05);
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    overscroll-behavior-x: contain;
 }
 
 .horizontal-timeline-container::-webkit-scrollbar {
@@ -274,9 +285,17 @@ section[id] {
 }
 
 .timeline-card {
-    flex: 0 0 340px;
-    scroll-snap-align: start;
+    flex: 0 0 calc(100vw - 3.5rem);
+    max-width: 320px;
+    scroll-snap-align: center;
     transition: var(--transition-smooth);
+}
+
+@media (min-width: 640px) {
+    .timeline-card {
+        flex: 0 0 340px;
+        scroll-snap-align: start;
+    }
 }
 
 @media (min-width: 768px) {
@@ -355,7 +374,7 @@ section[id] {
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(4, 7, 15, 0.85);
+    background: rgba(4, 7, 15, 0.88);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
@@ -365,7 +384,9 @@ section[id] {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    padding: 1rem;
+    padding: 0.75rem;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 .modal-backdrop.active {
@@ -381,11 +402,22 @@ section[id] {
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     transform: scale(0.94) translateY(20px);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     color: #FFFFFF;
     box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
     position: relative;
+}
+
+@media (max-width: 640px) {
+    .modal-backdrop {
+        padding: 0.5rem;
+    }
+    .modal-content {
+        max-height: 92vh;
+        border-radius: 14px;
+    }
 }
 
 .modal-backdrop.active .modal-content {
