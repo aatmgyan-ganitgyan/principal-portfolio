@@ -205,9 +205,7 @@ function renderPhilosophy() {
         container.innerHTML = phil.pillars.map(pillar => `
             <div class="p-8 rounded-2xl bg-white shadow-sm border border-slate-200/80 hover:shadow-xl hover:border-gold/50 transition-all group flex flex-col justify-between">
                 <div>
-                    <div class="text-3xl font-serif font-bold text-gold/60 mb-2 group-hover:text-amber-700 transition-colors">
-                        ${pillar.num}
-                    </div>
+                    <div class="w-8 h-1 bg-gold/70 mb-4 group-hover:w-12 transition-all duration-300"></div>
                     <h4 class="text-xl font-serif font-bold text-slate-900 mb-1 tracking-wide">
                         ${pillar.title}
                     </h4>
@@ -298,7 +296,7 @@ function renderInitiatives() {
             <div>
                 <div class="flex items-center justify-between gap-2 mb-4">
                     <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900">
-                        ${item.cardNum}
+                        Initiative
                     </span>
                     <span class="text-xs text-amber-800 font-semibold flex items-center gap-1">
                         <span>Details</span>
@@ -508,7 +506,7 @@ window.openInitiativeModal = function(initiativeId) {
 
     const modal = document.getElementById('initiative-modal');
     document.getElementById('modal-init-title').textContent = item.title;
-    document.getElementById('modal-init-category').textContent = item.cardNum;
+    document.getElementById('modal-init-category').textContent = 'Strategic Initiative';
     document.getElementById('modal-init-challenge').textContent = item.challenge;
     document.getElementById('modal-init-action').textContent = item.action;
     document.getElementById('modal-init-result').textContent = item.result;
