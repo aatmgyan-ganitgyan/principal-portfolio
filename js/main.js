@@ -146,17 +146,19 @@ function renderBeyondTitle() {
 
     if (container && person.cards) {
         container.innerHTML = person.cards.map(card => `
-            <div class="glass-card-light p-6 sm:p-7 rounded-2xl border border-amber-900/10 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                        <i data-lucide="${card.icon}" class="w-5 h-5"></i>
+            <div class="glass-card-light p-6 sm:p-7 rounded-2xl border border-amber-900/10 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col justify-between h-full">
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors flex-shrink-0 shadow-sm">
+                            <i data-lucide="${card.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-lg sm:text-xl font-serif font-bold text-slate-900 tracking-wide">${card.role}</h4>
+                            <span class="text-xs uppercase tracking-wider text-amber-800 font-semibold block">${card.subtitle}</span>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-lg font-bold font-serif tracking-wide text-slate-900">${card.role}</h4>
-                        <span class="text-xs uppercase tracking-wider text-amber-800 font-semibold block">${card.subtitle}</span>
-                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">${card.description}</p>
                 </div>
-                <p class="text-slate-600 text-sm leading-relaxed">${card.description}</p>
             </div>
         `).join('');
     }
