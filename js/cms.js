@@ -113,22 +113,10 @@
             ${v && v.date ? `<p class="t-small text-slate-500" style="margin:0.35rem 0 0">${esc(fmtDate(v.date))}</p>` : ''}${embed(id)}`);
     };
 
-    let showAllEvents = false;
-
-    window.toggleAllEvents = function () {
-        showAllEvents = !showAllEvents;
-        renderEvents();
-        if (!showAllEvents) {
-            const el = document.getElementById('events');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     function renderEvents() {
         const grid = document.getElementById('events-grid');
         if (!grid) return;
-        const items = showAllEvents ? events : events.slice(0, 6);
-        grid.innerHTML = items.map(e => `
+        grid.innerHTML = events.map(e => `
             <button type="button" class="initiative-editorial" onclick="openEventModal('${esc(e.id)}')" aria-label="Open event: ${esc(e.title)}">
                 <div class="initiative-media">${e.cover ? `<img src="${esc(e.cover)}" alt="" loading="lazy">` : ''}</div>
                 <div class="initiative-body">
@@ -138,29 +126,6 @@
                     <span class="t-label initiative-link">View event${(e.photos || []).length ? ` · ${e.photos.length} photos` : ''}${ytId(e.youtube) ? ' · video' : ''}</span>
                 </div>
             </button>`).join('');
-
-        [...grid.children].forEach((ch, i) => ch.style.setProperty('--i', Math.min(i, 6)));
-
-        let more = document.getElementById('events-more-container');
-        if (!more) {
-            more = document.createElement('div');
-            more.id = 'events-more-container';
-            more.className = 'text-center mt-10';
-            const pane = document.getElementById('events-pane');
-            if (pane) pane.appendChild(more);
-        }
-        if (events.length > 6) {
-            more.innerHTML = `
-                <button type="button" onclick="toggleAllEvents()" class="px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider border border-amber-900/30 text-amber-900 hover:bg-amber-900 hover:text-white transition-all inline-flex items-center gap-2 shadow-sm cursor-pointer">
-                    <span>${showAllEvents ? 'Show Fewer Events' : `View All Events (${events.length})`}</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:${showAllEvents ? 'rotate(180deg)' : 'none'};transition:transform .2s">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </button>`;
-            more.style.display = 'block';
-        } else {
-            more.style.display = 'none';
-        }
     }
 
     function renderVideos(channelUrl) {

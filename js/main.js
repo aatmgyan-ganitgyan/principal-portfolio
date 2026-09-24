@@ -299,7 +299,6 @@ function renderInitiatives() {
 }
 
 let currentCategory = 'all';
-let showAllPhotos = false;
 
 function renderLifeAtSchool() {
     const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
@@ -320,10 +319,8 @@ function renderLifeAtSchool() {
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
 
-    const itemsToDisplay = showAllPhotos ? filtered : filtered.slice(0, 6);
-
-    container.innerHTML = itemsToDisplay.map((item, idx) => `
-        <div class="photo-card aspect-[4/3] rounded-xl overflow-hidden relative group shadow-md cursor-pointer" onclick="openLightbox(${idx})">
+    container.innerHTML = filtered.map((item, idx) => `
+        <div class="photo-card aspect-[4/3] rounded-xl overflow-hidden relative group shadow-md" onclick="openLightbox(${idx})">
             <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover">
             <div class="photo-overlay">
                 <span class="t-label text-amber-300 mb-1">${item.category}</span>
@@ -332,44 +329,12 @@ function renderLifeAtSchool() {
             </div>
         </div>
     `).join('');
-
-    let moreContainer = document.getElementById('photo-story-more');
-    if (!moreContainer) {
-        moreContainer = document.createElement('div');
-        moreContainer.id = 'photo-story-more';
-        moreContainer.className = 'text-center mt-10';
-        container.parentNode.appendChild(moreContainer);
-    }
-
-    if (filtered.length > 6) {
-        moreContainer.innerHTML = `
-            <button type="button" onclick="toggleAllPhotos()" class="btn-outline-gold px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all hover:bg-gold hover:text-navy-deep inline-flex items-center gap-2 shadow-lg cursor-pointer">
-                <span>${showAllPhotos ? 'Show Fewer Photos' : `View All Photos (${filtered.length})`}</span>
-                <i data-lucide="${showAllPhotos ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4"></i>
-            </button>
-        `;
-        moreContainer.style.display = 'block';
-    } else {
-        moreContainer.innerHTML = '';
-        moreContainer.style.display = 'none';
-    }
 }
-
-window.toggleAllPhotos = function() {
-    showAllPhotos = !showAllPhotos;
-    renderLifeAtSchool();
-    if (!showAllPhotos) {
-        const el = document.getElementById('photo-story');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-    if (window.lucide) lucide.createIcons();
-};
 
 window.filterPhotos = function(category) {
     currentCategory = category;
-    showAllPhotos = false;
     renderLifeAtSchool();
-    if (window.lucide) lucide.createIcons();
+    lucide.createIcons();
 };
 
 function renderBeyondSchool() {
@@ -390,7 +355,7 @@ function renderBeyondSchool() {
                     </div>
                 </div>
                 <p class="t-body text-slate-300 mb-4">${item.description}</p>
-                <div class="space-y-2">
+                <div class="space-y-2 mb-5">
                     ${item.highlights.map(h => `
                         <div class="t-small flex items-start gap-2 text-slate-400">
                             <i data-lucide="check" class="w-3.5 h-3.5 text-gold flex-shrink-0 mt-0.5"></i>
@@ -398,6 +363,9 @@ function renderBeyondSchool() {
                         </div>
                     `).join('')}
                 </div>
+            </div>
+            <div class="h-32 rounded-xl overflow-hidden border border-slate-800/80">
+                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
             </div>
         </div>
     `).join('');
@@ -473,12 +441,6 @@ function initModals() {
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeAllModals();
-        } else if (e.key === 'ArrowLeft') {
-            const modal = document.getElementById('lightbox-modal');
-            if (modal && modal.classList.contains('active')) lightboxPrev();
-        } else if (e.key === 'ArrowRight') {
-            const modal = document.getElementById('lightbox-modal');
-            if (modal && modal.classList.contains('active')) lightboxNext();
         }
     });
 
@@ -571,15 +533,6 @@ function updateLightboxContent() {
     document.getElementById('lightbox-title').textContent = item.title;
     document.getElementById('lightbox-caption').textContent = item.caption;
     document.getElementById('lightbox-counter').textContent = `${activeLightboxIndex + 1} / ${filtered.length}`;
-
-    const doneBtn = document.getElementById('lightbox-done-btn');
-    if (doneBtn) {
-        if (activeLightboxIndex === filtered.length - 1) {
-            doneBtn.style.display = 'inline-flex';
-        } else {
-            doneBtn.style.display = 'none';
-        }
-    }
 }
 
 window.lightboxPrev = function() {

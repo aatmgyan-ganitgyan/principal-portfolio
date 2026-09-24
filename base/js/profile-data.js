@@ -290,6 +290,7 @@ const PRINCIPAL_DATA = {
                 category: "READING",
                 title: "Educational and personal interests.",
                 icon: "book",
+                image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=800",
                 description: "Consistent reader of literature on educational reform, emotional intelligence, leadership philosophies, and child development.",
                 highlights: [
                     "Pedagogical innovation and learning paradigms",
@@ -301,6 +302,7 @@ const PRINCIPAL_DATA = {
                 category: "SPEAKING",
                 title: "Seminars, workshops and conferences.",
                 icon: "mic",
+                image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800",
                 description: "Invited speaker and panelist sharing experiences on school leadership, teacher motivation, and progressive assessment.",
                 highlights: [
                     "Nurturing Whole-Child Growth in Secondary Schools",
@@ -312,6 +314,7 @@ const PRINCIPAL_DATA = {
                 category: "PERSONAL PHILOSOPHY",
                 title: "Short thoughts about education and life.",
                 icon: "feather",
+                image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
                 description: "Grounding leadership in presence, patience, and empathetic listening.",
                 highlights: [
                     "Being present in hallways and listening actively to teachers and students",
@@ -323,6 +326,7 @@ const PRINCIPAL_DATA = {
                 category: "TRAVEL & EXPLORATION",
                 title: "Places, experiences and observations.",
                 icon: "globe",
+                image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=800",
                 description: "Gaining diverse perspectives through travel, observing community learning systems, and appreciating heritage.",
                 highlights: [
                     "Observing innovative school campuses and classroom architectures",
@@ -334,6 +338,7 @@ const PRINCIPAL_DATA = {
                 category: "RECOGNITION",
                 title: "Awards, certifications and achievements.",
                 icon: "award",
+                image: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&q=80&w=800",
                 description: "Certifications and recognitions honoring years of dedicated service in school education and administration.",
                 highlights: [
                     "Certifications in School Leadership & Academic Governance",
