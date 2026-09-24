@@ -97,7 +97,14 @@
         const e = events.find(x => x.id === id);
         if (!e) return;
         const vid = ytId(e.youtube);
-        const photos = (e.photos || []).map(u => `<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="${esc(e.title)}" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:0.6rem"></a>`).join('');
+        const photoList = e.photos || [];
+        const photos = photoList.map((u, i) => `
+            <div onclick="openEventLightbox(${i})" style="cursor:zoom-in;border-radius:0.6rem;overflow:hidden;aspect-ratio:4/3">
+                <img src="${esc(u)}" alt="${esc(e.title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>`).join('');
+
+        window.__eventLightboxPhotos = photoList;
+
         openModal(`
             <h3 class="font-serif font-bold text-slate-900" style="font-size:var(--fs-h2);line-height:1.15">${esc(e.title)}</h3>
             <p class="t-small text-slate-500" style="margin:0.5rem 0 1.25rem">${esc(fmtDate(e.date))}${e.location ? ' · ' + esc(e.location) : ''}</p>
@@ -105,6 +112,55 @@
             ${(e.description || '').split(/\n{2,}/).filter(Boolean).map(p => `<p class="mb-4 text-slate-700 leading-relaxed">${esc(p).replace(/\n/g, '<br>')}</p>`).join('')}
             ${vid ? embed(vid) : ''}
             ${photos ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.6rem;margin-top:1.25rem">${photos}</div>` : ''}`);
+    };
+
+    window.openEventLightbox = function(startIdx) {
+        const photos = window.__eventLightboxPhotos || [];
+        if (!photos.length) return;
+        let idx = startIdx;
+
+        const existing = document.getElementById('__ev-lb');
+        if (existing) existing.remove();
+
+        const lb = document.createElement('div');
+        lb.id = '__ev-lb';
+        lb.style.cssText = 'position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:99999;display:flex;align-items:center;justify-content:center';
+
+        function render() {
+            const isFirst = idx === 0;
+            const isLast = idx === photos.length - 1;
+            lb.innerHTML = `
+                <button onclick="document.getElementById('__ev-lb').remove();document.body.style.overflow=''"
+                    style="position:fixed;top:1rem;right:1rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:2.5rem;height:2.5rem;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:10">✕</button>
+                <img src="${photos[idx]}" style="max-width:94vw;max-height:90vh;object-fit:contain;border-radius:6px;display:block">
+                <button onclick="if(window.__evLbIdx>0){window.__evLbIdx--;window.__evLbRender();}"
+                    style="position:fixed;left:1rem;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:3rem;height:3rem;cursor:pointer;font-size:1.6rem;display:flex;align-items:center;justify-content:center;opacity:${isFirst?'.25':'1'};pointer-events:${isFirst?'none':'auto'}">&#8249;</button>
+                <button onclick="if(window.__evLbIdx<window.__eventLightboxPhotos.length-1){window.__evLbIdx++;window.__evLbRender();}"
+                    style="position:fixed;right:1rem;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:3rem;height:3rem;cursor:pointer;font-size:1.6rem;display:flex;align-items:center;justify-content:center;opacity:${isLast?'.25':'1'};pointer-events:${isLast?'none':'auto'}">&#8250;</button>
+                <div style="position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0.75rem">
+                    <span style="font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:rgba(6,11,24,.8);border:1px solid rgba(197,168,128,.3);padding:0.3rem 0.9rem;border-radius:999px">${idx+1} / ${photos.length}</span>
+                    ${isLast ? `<button onclick="document.getElementById('__ev-lb').remove();document.body.style.overflow=''" style="padding:0.35rem 1.25rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none">Done Viewing</button>` : ''}
+                </div>`;
+            window.__evLbIdx = idx;
+        }
+
+        window.__evLbRender = function() {
+            idx = window.__evLbIdx;
+            render();
+        };
+
+        render();
+        lb.addEventListener('click', function(ev) { if (ev.target === lb) { lb.remove(); document.body.style.overflow = ''; } });
+        document.body.appendChild(lb);
+        document.body.style.overflow = 'hidden';
+
+        const keyFn = function(ev) {
+            if (!document.getElementById('__ev-lb')) { document.removeEventListener('keydown', keyFn); return; }
+            if (ev.key === 'ArrowLeft' && window.__evLbIdx > 0) { window.__evLbIdx--; window.__evLbRender(); }
+            if (ev.key === 'ArrowRight' && window.__evLbIdx < photos.length - 1) { window.__evLbIdx++; window.__evLbRender(); }
+            if (ev.key === 'Escape') { lb.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', keyFn); }
+        };
+        document.addEventListener('keydown', keyFn);
     };
 
     window.openVideoModal = function (id) {
