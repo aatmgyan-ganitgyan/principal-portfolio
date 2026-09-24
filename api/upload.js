@@ -1,3 +1,5 @@
+const { put } = require('@vercel/blob');
+
 module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -10,9 +12,22 @@ module.exports = async (req, res) => {
     try {
         const { dataUrl, name } = req.body || {};
         if (!dataUrl) return res.status(400).json({ error: 'No image data' });
-        // Return the dataUrl directly as the image URL
-        // This stores images as base64 inside content.json
-        return res.status(200).json({ url: dataUrl });
+
+        // Convert base64 dataUrl to buffer
+        const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        if (!matches) return res.status(400).json({ error: 'Invalid image format' });
+
+        const mimeType = matches[1];
+        const buffer = Buffer.from(matches[2], 'base64');
+        const filename = name || `photo-${Date.now()}.jpg`;
+
+        // Upload to Vercel Blob
+        const blob = await put(filename, buffer, {
+            access: 'public',
+            contentType: mimeType,
+        });
+
+        return res.status(200).json({ url: blob.url });
     } catch (e) {
         return res.status(500).json({ error: e.message });
     }
