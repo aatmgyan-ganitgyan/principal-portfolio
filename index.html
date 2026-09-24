@@ -267,8 +267,9 @@
         <div class="glow-orb-gold -bottom-24 -right-24 opacity-40"></div>
 
         <div class="max-w-7xl mx-auto relative z-10 w-full">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-6">
-                <div>
+            <!-- Journey Header: text left, photo right -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 sm:mb-16 gap-8 sm:gap-10">
+                <div class="md:w-1/2">
                     <span class="section-tag">Timeline</span>
                     <h2 class="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-2">
                         From Classroom to Leadership
@@ -276,10 +277,22 @@
                     <p class="text-xs sm:text-sm font-medium text-slate-400 max-w-xl">
                         A purposeful trajectory of pedagogical transformation, institutional development, and vision.
                     </p>
+                    <div class="flex items-center gap-2 text-xs text-gold font-semibold uppercase tracking-wider mt-6">
+                        <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+                        <span>Scroll sideways</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-gold font-semibold uppercase tracking-wider">
-                    <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
-                    <span>Swipe or scroll horizontally</span>
+                <!-- Crossfade Photo -->
+                <div class="md:w-1/2 journey-photo-wrap">
+                    <div class="journey-photo-frame">
+                        <img src="assets/images/journey-working.jpg"
+                             alt="Varsha Phukane working at her desk"
+                             class="journey-photo journey-photo-1" />
+                        <img src="assets/images/journey-camera.jpg"
+                             alt="Varsha Phukane smiling at the camera"
+                             class="journey-photo journey-photo-2" />
+                        <div class="journey-photo-label">TODAY · PRINCIPAL'S OFFICE</div>
+                    </div>
                 </div>
             </div>
 
