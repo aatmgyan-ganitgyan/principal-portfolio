@@ -144,34 +144,177 @@
     }
 
     window.openAllEventsPage = function() {
-        const cardHtml = events.map(e => `
-            <button type="button" onclick="parent.openEventModal && parent.openEventModal('${esc(e.id)}')"
-                style="background:#1a1f2e;border:1px solid rgba(255,255,255,.08);border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s;display:flex;flex-direction:column"
-                onmouseover="this.style.borderColor='rgba(197,168,128,.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
-                ${e.cover ? `<div style="aspect-ratio:16/9;overflow:hidden"><img src="${esc(e.cover)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>` : ''}
-                <div style="padding:1.25rem;flex:1">
-                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:0.4rem">${esc(fmtDate(e.date))}${e.location ? ' · ' + esc(e.location) : ''}</div>
-                    <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.5rem;line-height:1.3">${esc(e.title)}</h3>
-                    <p style="font-size:0.8rem;color:#94a3b8;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(e.description || '')}</p>
-                </div>
-            </button>`).join('');
+        const eventsJson = JSON.stringify(events);
 
         const html = `<!DOCTYPE html><html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>All Events — Varsha Phukane</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#060B18;color:#e2e8f0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060B18;color:#e2e8f0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
 header{background:#0B1326;border-bottom:1px solid rgba(197,168,128,.15);padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
 .back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;text-decoration:none;transition:color .2s}.back:hover{color:#C5A880}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;padding:1.5rem}</style>
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;padding:1.5rem}
+.card{background:#101B35;border:1px solid rgba(255,255,255,.08);border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s;display:flex;flex-direction:column}
+.card:hover{border-color:rgba(197,168,128,.4);transform:translateY(-2px)}
+.card-img{aspect-ratio:16/9;overflow:hidden;background:#0B1326}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}.card:hover .card-img img{transform:scale(1.04)}
+.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
+.card-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74}
+.card-title{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:#fff;line-height:1.3}
+.card-desc{font-size:0.8rem;color:#94a3b8;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:auto}
+.card-meta{font-size:0.7rem;color:#C5A880;font-weight:600;margin-top:0.5rem}
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(6,11,24,.92);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:#101B35;border:1px solid rgba(197,168,128,.2);border-radius:1.25rem;max-width:680px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:50%;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.modal-close:hover{background:#C5A880;color:#060B18;border-color:#C5A880}
+.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:0.5rem}
+.modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:1rem}
+.modal-cover{width:100%;border-radius:0.75rem;margin-bottom:1.25rem;aspect-ratio:16/9;object-fit:cover}
+.modal-desc{font-size:0.9rem;color:#cbd5e1;line-height:1.7;margin-bottom:1.25rem}
+.modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem;margin-top:1rem}
+.modal-photos a img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:0.5rem;transition:transform .2s}
+.modal-photos a:hover img{transform:scale(1.03)}
+/* Photo lightbox */
+.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.lb.open{display:flex}
+.lb-inner{max-width:860px;width:100%;display:flex;flex-direction:column;align-items:center;gap:1rem;position:relative}
+.lb-img{max-width:100%;max-height:75vh;border-radius:0.75rem;object-fit:contain}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.75rem;height:2.75rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;transition:all .2s}
+.lb-nav:hover{background:#C5A880;color:#060B18}
+.lb-prev{left:0}.lb-next{right:0}
+.lb-close{position:absolute;top:0.5rem;right:0.5rem;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.25rem;height:2.25rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;z-index:10}
+.lb-close:hover{background:#C5A880;color:#060B18}
+.lb-counter{font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:#101B35;border:1px solid rgba(197,168,128,.25);padding:0.25rem 0.75rem;border-radius:999px}
+.lb-done{display:none;padding:0.4rem 1.25rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
+</style>
 </head>
 <body>
 <header>
-    <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
-    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C5A880">Events &amp; Celebrations</div>
-    <span style="font-size:0.75rem;color:#64748b">${events.length} events</span>
+  <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C5A880">Events &amp; Celebrations</div>
+  <span style="font-size:0.75rem;color:#64748b" id="ev-count"></span>
 </header>
-<div class="grid">${cardHtml}</div>
+<div class="grid" id="ev-grid"></div>
+
+<!-- Event Modal -->
+<div class="modal-bg" id="ev-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-date" id="m-date"></div>
+    <div class="modal-title" id="m-title"></div>
+    <img class="modal-cover" id="m-cover" src="" alt="" style="display:none">
+    <div class="modal-desc" id="m-desc"></div>
+    <div id="m-video"></div>
+    <div class="modal-photos" id="m-photos"></div>
+  </div>
+</div>
+
+<!-- Photo Lightbox -->
+<div class="lb" id="lb">
+  <button class="lb-close" onclick="lbClose()">✕</button>
+  <div class="lb-inner">
+    <img class="lb-img" id="lb-img" src="" alt="">
+    <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+    <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.25rem">
+      <span class="lb-counter" id="lb-counter"></span>
+      <button class="lb-done" id="lb-done" onclick="lbClose()">Done Viewing</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const __events = ${eventsJson};
+let __lbPhotos = [], __lbIdx = 0;
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  return isNaN(dt) ? d : dt.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+}
+function ytId(u) {
+  if (!u) return '';
+  const m = u.match(/(?:v=|youtu\\.be\\/)([\\w-]{11})/);
+  return m ? m[1] : '';
+}
+
+// Render cards
+document.getElementById('ev-count').textContent = __events.length + ' events';
+document.getElementById('ev-grid').innerHTML = __events.map((e,i) => \`
+  <div class="card" onclick="openModal(\${i})">
+    \${e.cover ? \`<div class="card-img"><img src="\${e.cover}" alt="" loading="lazy"></div>\` : ''}
+    <div class="card-body">
+      <div class="card-date">\${fmtDate(e.date)}\${e.location ? ' · ' + e.location : ''}</div>
+      <div class="card-title">\${e.title}</div>
+      <div class="card-desc">\${e.description || ''}</div>
+      \${(e.photos||[]).length || ytId(e.youtube) ? \`<div class="card-meta">\${[
+        (e.photos||[]).length ? (e.photos||[]).length + ' photos' : '',
+        ytId(e.youtube) ? 'video' : ''
+      ].filter(Boolean).join(' · ')}</div>\` : ''}
+    </div>
+  </div>\`).join('');
+
+function openModal(idx) {
+  const e = __events[idx];
+  document.getElementById('m-date').textContent = fmtDate(e.date) + (e.location ? ' · ' + e.location : '');
+  document.getElementById('m-title').textContent = e.title;
+  const cover = document.getElementById('m-cover');
+  if (e.cover) { cover.src = e.cover; cover.style.display = ''; } else { cover.style.display = 'none'; }
+  document.getElementById('m-desc').innerHTML = (e.description || '').split(/\\n{2,}/).filter(Boolean).map(p => \`<p style="margin-bottom:0.75rem">\${p.replace(/\\n/g,'<br>')}</p>\`).join('');
+  const vid = ytId(e.youtube);
+  document.getElementById('m-video').innerHTML = vid ? \`<div style="position:relative;aspect-ratio:16/9;border-radius:0.75rem;overflow:hidden;background:#000;margin:1rem 0"><iframe src="https://www.youtube-nocookie.com/embed/\${vid}?rel=0" title="Video" allow="autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>\` : '';
+  const photos = e.photos || [];
+  __lbPhotos = photos;
+  document.getElementById('m-photos').innerHTML = photos.map((u,i) => \`<a href="#" onclick="lbOpen(\${i});return false"><img src="\${u}" alt="" loading="lazy"></a>\`).join('');
+  document.getElementById('ev-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('ev-modal').classList.remove('open');
+  document.getElementById('m-video').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('ev-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function lbOpen(idx) {
+  __lbIdx = idx;
+  lbShow();
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function lbShow() {
+  document.getElementById('lb-img').src = __lbPhotos[__lbIdx];
+  document.getElementById('lb-counter').textContent = (__lbIdx+1) + ' / ' + __lbPhotos.length;
+  document.getElementById('lb-done').style.display = __lbIdx === __lbPhotos.length - 1 ? '' : 'none';
+  document.getElementById('lb-nav' in document ? 'lb-prev' : 'lb-prev').style.display = __lbPhotos.length > 1 ? '' : 'none';
+}
+function lbNav(dir) {
+  __lbIdx = (__lbIdx + dir + __lbPhotos.length) % __lbPhotos.length;
+  lbShow();
+}
+function lbClose() {
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('lb').addEventListener('click', function(e) { if (e.target === this) lbClose(); });
+document.addEventListener('keydown', function(e) {
+  if (document.getElementById('lb').classList.contains('open')) {
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'Escape') lbClose();
+  } else if (document.getElementById('ev-modal').classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+  }
+});
+</script>
 </body></html>`;
         const blob = new Blob([html], { type: 'text/html' });
         window.open(URL.createObjectURL(blob), '_blank');
