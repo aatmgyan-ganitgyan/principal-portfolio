@@ -121,7 +121,140 @@ section[id] { scroll-margin-top: var(--nav-h); }
 .masonry .photo-card img { display: block; height: auto; }
 .photo-overlay { padding: 1.25rem; }
 
-/* ----------------- JOURNEY: vertical on mobile ----------------- */
+/* ----------------- JOURNEY: photo crossfade & timeline ----------------- */
+.journey-photo-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.journey-photo-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 1.5px solid rgba(197, 168, 128, 0.45);
+    background: #060B18;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(197, 168, 128, 0.15);
+}
+
+.journey-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    will-change: opacity, transform;
+}
+
+.journey-photo-1 {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.journey-photo-2 {
+    opacity: 0;
+    transform: scale(1);
+}
+
+.journey-photo-frame.is-active .journey-photo-1,
+html:not(.js) .journey-photo-1 {
+    animation: journeyFade1 10s ease-in-out infinite;
+}
+
+.journey-photo-frame.is-active .journey-photo-2,
+html:not(.js) .journey-photo-2 {
+    animation: journeyFade2 10s ease-in-out infinite;
+}
+
+@keyframes journeyFade1 {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1.035);
+    }
+    48% {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+    88% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    96% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes journeyFade2 {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    40% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    48% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    88% {
+        opacity: 1;
+        transform: scale(1.035);
+    }
+    96% {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+.journey-photo-label {
+    position: absolute;
+    bottom: 0.85rem;
+    left: 0.85rem;
+    z-index: 10;
+    background: rgba(6, 11, 24, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #C5A880;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(197, 168, 128, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .journey-photo-1 {
+        opacity: 0 !important;
+        animation: none !important;
+        transform: none !important;
+    }
+    .journey-photo-2 {
+        opacity: 1 !important;
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
 @media (max-width: 767px) {
     .horizontal-timeline-container {
         display: block; overflow: visible; padding: 0 0 0 1.5rem; position: relative;

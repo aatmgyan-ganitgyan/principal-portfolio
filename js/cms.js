@@ -150,11 +150,11 @@
             if (s.schoolWebsite) D.signature.schoolWebsite = s.schoolWebsite;
             renderSignature();
         }
-        if (s.journeyWorking) {
+        if (s.journeyWorking && !s.journeyWorking.includes('dsc-0831')) {
             const j1 = document.querySelector('.journey-photo-1');
             if (j1) j1.src = s.journeyWorking;
         }
-        if (s.journeyCamera) {
+        if (s.journeyCamera && !s.journeyCamera.includes('dsc-0829')) {
             const j2 = document.querySelector('.journey-photo-2');
             if (j2) j2.src = s.journeyCamera;
         }
