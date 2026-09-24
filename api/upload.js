@@ -13,18 +13,17 @@ module.exports = async (req, res) => {
         const { dataUrl, name } = req.body || {};
         if (!dataUrl) return res.status(400).json({ error: 'No image data' });
 
-        // Convert base64 dataUrl to buffer
         const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
         if (!matches) return res.status(400).json({ error: 'Invalid image format' });
 
         const mimeType = matches[1];
         const buffer = Buffer.from(matches[2], 'base64');
-        const filename = name || `photo-${Date.now()}.jpg`;
+        const filename = `photos/${Date.now()}-${(name || 'photo.jpg').replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
-        // Upload to Vercel Blob
         const blob = await put(filename, buffer, {
             access: 'public',
             contentType: mimeType,
+            addRandomSuffix: false,
         });
 
         return res.status(200).json({ url: blob.url });
