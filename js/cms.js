@@ -176,11 +176,11 @@ header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;posit
 .modal-cover{width:100%;border-radius:0.75rem;margin-bottom:1.25rem;aspect-ratio:16/9;object-fit:cover}
 .modal-desc{font-size:0.9rem;color:#475569;line-height:1.8;margin-bottom:1.25rem}
 .modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.6rem;margin-top:1rem}
-.modal-photos a{display:block;border-radius:0.5rem;overflow:hidden;cursor:zoom-in}
-.modal-photos a img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .25s;display:block}
-.modal-photos a:hover img{transform:scale(1.05)}
+.photo-thumb{border-radius:0.5rem;overflow:hidden;cursor:zoom-in}
+.photo-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .25s;display:block}
+.photo-thumb:hover img{transform:scale(1.05)}
 /* Lightbox — fullscreen dark overlay, image as big as possible */
-.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:99999;flex-direction:column;align-items:center;justify-content:center;padding:0}
 .lb.open{display:flex}
 .lb-img-wrap{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
 .lb-img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:6px;display:block}
@@ -271,7 +271,7 @@ function openModal(idx) {
   document.getElementById('m-video').innerHTML = vid ? \`<div style="position:relative;aspect-ratio:16/9;border-radius:0.75rem;overflow:hidden;background:#000;margin:1rem 0"><iframe src="https://www.youtube-nocookie.com/embed/\${vid}?rel=0" title="Video" allow="autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>\` : '';
   const photos = e.photos || [];
   __lbPhotos = photos;
-  document.getElementById('m-photos').innerHTML = photos.map((u,i) => \`<a href="#" onclick="lbOpen(\${i});return false"><img src="\${u}" alt="" loading="lazy"></a>\`).join('');
+  document.getElementById('m-photos').innerHTML = photos.map((u,i) => `<div class="photo-thumb" onclick="event.stopPropagation();lbOpen(${i})"><img src="${u}" alt="" loading="lazy"></div>`).join('');
   document.getElementById('ev-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
