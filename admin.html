@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Website Admin | Varsha Phukane</title>
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --navy:#060B18; --navy2:#0B1326; --card:#101B35; --line:#1f2a44; --gold:#C5A880; --gold2:#E7D5BC; --ink:#E5E7EB; --mute:#94A3B8; --ok:#34d399; --bad:#f87171; }
+* { box-sizing: border-box; }
+body { margin:0; font-family:'Plus Jakarta Sans',system-ui,sans-serif; background:var(--navy); color:var(--ink); font-size:15px; }
+h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; margin:0; }
+a { color:var(--gold2); }
+button, input, textarea, select { font:inherit; }
+.hidden { display:none !important; }
+.wrap { max-width:1100px; margin:0 auto; padding:1.25rem; }
+.btn { border:1px solid var(--gold); background:transparent; color:var(--gold2); padding:.6rem 1.1rem; border-radius:999px; cursor:pointer; font-weight:600; font-size:.85rem; letter-spacing:.02em; text-decoration:none; display:inline-block; }
+.btn:hover { background:rgba(197,168,128,.12); }
+.btn.primary { background:var(--gold); color:var(--navy); }
+.btn.primary:hover { background:#d7bb92; }
+.btn.danger { border-color:#7f1d1d; color:#fca5a5; }
+.btn.small { padding:.35rem .8rem; font-size:.78rem; }
+.btn:disabled { opacity:.5; cursor:wait; }
+label { display:block; font-size:.78rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); margin:0 0 .35rem; }
+input[type=text], input[type=password], input[type=date], input[type=url], input[type=email], textarea, select {
+  width:100%; background:var(--navy2); color:var(--ink); border:1px solid var(--line); border-radius:.7rem; padding:.7rem .85rem; outline:none; }
+input:focus, textarea:focus, select:focus { border-color:var(--gold); }
+textarea { min-height:120px; resize:vertical; line-height:1.55; }
+.field { margin-bottom:1rem; }
+.hint { font-size:.8rem; color:var(--mute); margin-top:.35rem; line-height:1.5; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:1rem; padding:1.25rem; }
+#login { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1.25rem; }
+#login .card { width:100%; max-width:400px; padding:2rem; }
+#login h1 { font-size:1.6rem; margin-bottom:.25rem; }
+#login p { color:var(--mute); margin:0 0 1.5rem; }
+.err { color:var(--bad); font-size:.85rem; min-height:1.2em; margin:.5rem 0; }
+header.top { position:sticky; top:0; z-index:10; background:rgba(6,11,24,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+header.top .wrap { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+header.top h1 { font-size:1.15rem; }
+header.top small { display:block; color:var(--mute); font-size:.75rem; }
+.tabs { display:flex; gap:.4rem; overflow-x:auto; padding:1rem 0 .25rem; }
+.tab { white-space:nowrap; border:1px solid var(--line); background:var(--navy2); color:var(--mute); padding:.55rem 1rem; border-radius:999px; cursor:pointer; font-weight:600; font-size:.85rem; }
+.tab.active { background:var(--gold); color:var(--navy); border-color:var(--gold); }
+.panel-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:1.25rem 0 1rem; flex-wrap:wrap; }
+.panel-head h2 { font-size:1.5rem; }
+.panel-head p { color:var(--mute); margin:.25rem 0 0; font-size:.9rem; }
+.list { display:grid; gap:.75rem; }
+.row { display:flex; gap:1rem; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:.9rem; padding:.75rem; }
+.row img, .row .ph { width:84px; height:64px; border-radius:.6rem; object-fit:cover; background:var(--navy2); flex-shrink:0; }
+.row .meta { flex:1; min-width:0; }
+.row .meta b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.row .meta span { color:var(--mute); font-size:.82rem; }
+.row .acts { display:flex; gap:.4rem; flex-shrink:0; }
+.empty { color:var(--mute); text-align:center; padding:2rem; border:1px dashed var(--line); border-radius:1rem; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:.75rem; }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:.9rem; overflow:hidden; }
+.tile img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+.tile div { padding:.55rem .65rem; font-size:.82rem; }
+.tile div span { color:var(--mute); display:block; font-size:.75rem; }
+.tile .acts { display:flex; gap:.35rem; padding:0 .65rem .65rem; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:640px) { .two { grid-template-columns:1fr; } .row { flex-wrap:wrap; } .row .acts { width:100%; justify-content:flex-end; } }
+#editor { position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.6); display:flex; justify-content:flex-end; }
+#editor .sheet { width:100%; max-width:620px; height:100%; overflow-y:auto; background:var(--navy); border-left:1px solid var(--line); padding:1.5rem; }
+#editor h2 { font-size:1.4rem; margin-bottom:1.25rem; }
+.sheet-acts { position:sticky; bottom:-1.5rem; background:var(--navy); padding:1rem 0; display:flex; gap:.6rem; justify-content:flex-end; border-top:1px solid var(--line); margin-top:1rem; }
+.thumbs { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; }
+.thumbs figure { margin:0; position:relative; }
+.thumbs img { width:88px; height:66px; object-fit:cover; border-radius:.5rem; display:block; }
+.thumbs button { position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:50%; border:0; background:#7f1d1d; color:#fff; cursor:pointer; line-height:22px; padding:0; }
+.drop { border:1px dashed var(--gold); border-radius:.9rem; padding:1rem; text-align:center; color:var(--gold2); cursor:pointer; background:rgba(197,168,128,.05); }
+#toast { position:fixed; left:50%; bottom:1.25rem; transform:translateX(-50%); background:var(--card); border:1px solid var(--gold); color:var(--ink); padding:.75rem 1.1rem; border-radius:.8rem; z-index:99; box-shadow:0 10px 30px rgba(0,0,0,.4); max-width:90vw; }
+#toast.bad { border-color:var(--bad); }
+.check { display:flex; align-items:center; gap:.5rem; text-transform:none; letter-spacing:0; font-size:.9rem; color:var(--ink); }
+</style>
+</head>
+<body>
+
+<section id="login" class="hidden">
+  <form class="card" id="login-form" autocomplete="on">
+    <h1>Website Admin</h1>
+    <p>Log in to update the blog, photos, events and videos.</p>
+    <div class="field"><label for="u">Username</label><input type="text" id="u" name="username" autocomplete="username" autocapitalize="none" required></div>
+    <div class="field"><label for="p">Password</label><input type="password" id="p" name="password" autocomplete="current-password" required></div>
+    <div class="err" id="login-err"></div>
+    <button class="btn primary" style="width:100%" type="submit">Log in</button>
+    <p style="margin:1.25rem 0 0;font-size:.85rem"><a href="/">? Back to website</a></p>
+  </form>
+</section>
+
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div><h1>Website Admin</h1><small id="who"></small></div>
+      <div style="display:flex;gap:.5rem">
+        <a class="btn small" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="btn small" id="logout">Log out</button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="blog">Blog</button>
+      <button class="tab" data-tab="photos">Photos</button>
+      <button class="tab" data-tab="events">Events</button>
+      <button class="tab" data-tab="videos">Videos</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+    <div id="panel"></div>
+  </main>
+</div>
+
+<div id="editor" class="hidden"><div class="sheet" id="sheet"></div></div>
+<div id="toast" class="hidden"></div>
+
+<script>
+/* Admin panel. Everything the owner adds is saved to /api/content and appears on the website
+   within about a minute. To add a new kind of content later, add an entry to COLLECTIONS. */
+const PHOTO_CATEGORIES = ['Classroom', 'Morning Assembly', 'Teacher Interaction', 'Student Projects', 'Events', 'Sports', 'Trips', 'Celebrations', 'Principal with Students'];
+
+const COLLECTIONS = {
+  blog: {
+    title: 'Blog', noun: 'post', intro: 'Articles for “The Principal’s Voice”. Newest posts appear first.',
+    fields: [
+      { k: 'title', label: 'Title', type: 'text', required: true },
+      { k: 'date', label: 'Date', type: 'date', required: true },
+      { k: 'readTime', label: 'Read time', type: 'text', placeholder: 'e.g. 3 min read' },
+      { k: 'description', label: 'Short description (shown on the card)', type: 'textarea', rows: 3, required: true },
+      { k: 'content', label: 'Full article', type: 'textarea', rows: 14, required: true,
+        hint: 'Leave an empty line between paragraphs. Headings: start a line with ####. Bold: **word**. Italic: *word*. Quote: start a line with >. List item: start a line with -' },
+      { k: 'cover', label: 'Cover photo (optional)', type: 'image' },
+      { k: 'published', label: 'Show on website', type: 'checkbox', default: true },
+    ],
+    summary: i => [i.title, `${fmtDate(i.date)}${i.published === false ? ' · Hidden' : ''}`, i.cover],
+  },
+  events: {
+    title: 'Events', noun: 'event', intro: 'School events with a cover photo, a gallery and an optional YouTube video.',
+    fields: [
+      { k: 'title', label: 'Event name', type: 'text', required: true },
+      { k: 'date', label: 'Date', type: 'date', required: true },
+      { k: 'location', label: 'Place', type: 'text', placeholder: 'e.g. School auditorium' },
+      { k: 'description', label: 'About the event', type: 'textarea', rows: 6 },
+      { k: 'cover', label: 'Cover photo', type: 'image' },
+      { k: 'photos', label: 'More photos (gallery)', type: 'images' },
+      { k: 'youtube', label: 'YouTube video link (optional)', type: 'url', placeholder: 'https://youtu.be/…' },
+      { k: 'published', label: 'Show on website', type: 'checkbox', default: true },
+    ],
+    summary: i => [i.title, `${fmtDate(i.date)}${i.location ? ' · ' + i.location : ''}${(i.photos || []).length ? ' · ' + i.photos.length + ' photos' : ''}${i.published === false ? ' · Hidden' : ''}`, i.cover],
+  },
+  videos: {
+    title: 'Videos', noun: 'video', intro: 'Single YouTube videos. Videos from the channel in Settings appear automatically.',
+    fields: [
+      { k: 'url', label: 'YouTube link', type: 'url', required: true, placeholder: 'https://www.youtube.com/watch?v=…' },
+      { k: 'title', label: 'Title', type: 'text', required: true },
+      { k: 'date', label: 'Date', type: 'date' },
+    ],
+    summary: i => [i.title, fmtDate(i.date), ytId(i.url) ? `https://i.ytimg.com/vi/${ytId(i.url)}/mqdefault.jpg` : ''],
+  },
+  photos: {
+    title: 'Photos', noun: 'photo', intro: 'Photos for the “Life @ School” gallery.',
+    fields: [
+      { k: 'url', label: 'Photo', type: 'image', required: true },
+      { k: 'title', label: 'Title', type: 'text' },
+      { k: 'caption', label: 'Caption', type: 'textarea', rows: 2 },
+      { k: 'category', label: 'Category', type: 'select', options: PHOTO_CATEGORIES },
+    ],
+  },
+};
+
+let content = null;
+let tab = 'blog';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const today = () => new Date().toISOString().slice(0, 10);
+function fmtDate(d) { if (!d) return ''; const t = new Date(d + 'T00:00:00'); return isNaN(t) ? d : t.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
+function ytId(url) { const m = String(url || '').match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/|\/live\/)([\w-]{11})/); return m ? m[1] : ''; }
+
+function toast(msg, bad = false) {
+  const t = $('#toast'); t.textContent = msg; t.className = bad ? 'bad' : ''; clearTimeout(toast.t);
+  toast.t = setTimeout(() => t.classList.add('hidden'), bad ? 6000 : 3500);
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, { credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, ...opts });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401 && path !== '/api/login') { showLogin(); throw new Error('Your session has ended. Please log in again.'); }
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
+function showLogin() { $('#app').classList.add('hidden'); $('#login').classList.remove('hidden'); $('#u').focus(); }
+async function showApp(user) {
+  $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+  $('#who').textContent = `Logged in as ${user}`;
+  content = await api('/api/content?fresh=1');
+  for (const k of ['blog', 'photos', 'events', 'videos']) content[k] = content[k] || [];
+  content.settings = content.settings || {};
+  render();
+}
+$('#login-form').addEventListener('submit', async e => {
+  e.preventDefault(); $('#login-err').textContent = '';
+  const btn = e.target.querySelector('button'); btn.disabled = true;
+  try {
+    const r = await api('/api/login', { method: 'POST', body: JSON.stringify({ username: $('#u').value, password: $('#p').value }) });
+    $('#p').value = ''; await showApp(r.user);
+  } catch (err) { $('#login-err').textContent = err.message; }
+  btn.disabled = false;
+});
+$('#logout').addEventListener('click', async () => { await api('/api/logout', { method: 'POST' }).catch(() => {}); showLogin(); });
+
+async function save(message = 'Saved. The website updates within a minute.') {
+  try {
+    const r = await api('/api/content', { method: 'POST', body: JSON.stringify({ content }) });
+    content = r.content; render(); toast(message); return true;
+  } catch (err) { toast(err.message, true); return false; }
+}
+
+async function shrink(file, max = 1920) {
+  const bmp = await createImageBitmap(file);
+  const scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return c.toDataURL('image/jpeg', 0.85);
+}
+async function uploadFile(file) {
+  const dataUrl = await shrink(file);
+  const r = await api('/api/upload', { method: 'POST', body: JSON.stringify({ dataUrl, name: file.name }) });
+  return r.url;
+}
+
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b) return;
+  tab = b.dataset.tab; document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === b)); render();
+});
+
+function render() {
+  if (!content) return;
+  if (tab === 'settings') return renderSettings();
+  if (tab === 'photos') return renderPhotos();
+  const c = COLLECTIONS[tab]; const items = [...content[tab]].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+  $('#panel').innerHTML = `
+    <div class="panel-head"><div><h2>${c.title}</h2><p>${c.intro}</p></div>
+      <button class="btn primary" data-new>+ Add ${c.noun}</button></div>
+    ${tab === 'videos' ? `<div class="card" style="margin-bottom:1rem"><b>YouTube channel:</b> ${content.settings.youtubeChannel ? esc(content.settings.youtubeChannel) : '<span style="color:var(--mute)">not set</span>'} <span class="hint">(change it in Settings)</span></div>` : ''}
+    <div class="list">${items.length ? items.map(i => { const [t, sub, img] = c.summary(i); return `
+      <div class="row">${img ? `<img src="${esc(img)}" alt="">` : '<div class="ph"></div>'}
+        <div class="meta"><b>${esc(t)}</b><span>${esc(sub)}</span></div>
+        <div class="acts"><button class="btn small" data-edit="${i.id}">Edit</button><button class="btn small danger" data-del="${i.id}">Delete</button></div>
+      </div>`; }).join('') : `<div class="empty">Nothing here yet. Click “Add ${c.noun}” to start.</div>`}</div>`;
+  $('[data-new]').onclick = () => openEditor(tab);
+  $('#panel').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openEditor(tab, content[tab].find(i => i.id === b.dataset.edit)));
+  $('#panel').querySelectorAll('[data-del]').forEach(b => b.onclick = () => remove(tab, b.dataset.del));
+}
+
+async function remove(kind, id) {
+  const item = content[kind].find(i => i.id === id);
+  if (!confirm(`Delete “${item.title || 'this ' + COLLECTIONS[kind].noun}”? This cannot be undone.`)) return;
+  content[kind] = content[kind].filter(i => i.id !== id);
+  await save('Deleted.');
+}
+
+function renderPhotos() {
+  const items = content.photos;
+  $('#panel').innerHTML = `
+    <div class="panel-head"><div><h2>Photos</h2><p>${COLLECTIONS.photos.intro}</p></div></div>
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="two">
+        <div class="field"><label>Category for new photos</label><select id="bulk-cat">${PHOTO_CATEGORIES.map(o => `<option>${esc(o)}</option>`).join('')}</select></div>
+        <div class="field"><label>Title (optional)</label><input type="text" id="bulk-title" placeholder="e.g. Annual Day 2026"></div>
+      </div>
+      <div class="drop" id="bulk-drop">Tap to choose photos (you can pick many at once)</div>
+      <input type="file" id="bulk-file" accept="image/*" multiple class="hidden">
+      <div class="hint" id="bulk-status">Photos are resized automatically before upload.</div>
+    </div>
+    ${items.length ? `<div class="grid">${[...items].reverse().map(p => `
+      <div class="tile"><img src="${esc(p.url)}" alt="" loading="lazy">
+        <div>${esc(p.title || 'Untitled')}<span>${esc(p.category || '')}</span></div>
+        <div class="acts"><button class="btn small" data-edit="${p.id}">Edit</button><button class="btn small danger" data-del="${p.id}">Delete</button></div>
+      </div>`).join('')}</div>` : '<div class="empty">No photos yet.</div>'}`;
+  $('#bulk-drop').onclick = () => $('#bulk-file').click();
+  $('#bulk-file').onchange = async e => {
+    const files = [...e.target.files]; if (!files.length) return;
+    const cat = $('#bulk-cat').value, title = $('#bulk-title').value.trim();
+    let done = 0;
+    for (const f of files) {
+      $('#bulk-status').textContent = `Uploading ${done + 1} of ${files.length}…`;
+      try { const url = await uploadFile(f); content.photos.push({ id: uid(), url, title, caption: '', category: cat, date: today() }); done++; }
+      catch (err) { toast(`${f.name}: ${err.message}`, true); }
+    }
+    if (done) await save(`${done} photo${done > 1 ? 's' : ''} added.`);
+  };
+  $('#panel').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openEditor('photos', content.photos.find(i => i.id === b.dataset.edit)));
+  $('#panel').querySelectorAll('[data-del]').forEach(b => b.onclick = () => remove('photos', b.dataset.del));
+}
+
+function renderSettings() {
+  const s = content.settings;
+  $('#panel').innerHTML = `
+    <div class="panel-head"><div><h2>Settings</h2><p>Contact links, the YouTube channel and the journey photos shown on the website.</p></div></div>
+    <form class="card" id="settings-form">
+      <div class="field"><label>YouTube channel</label><input type="text" name="youtubeChannel" value="${esc(s.youtubeChannel)}" placeholder="https://www.youtube.com/@channelname">
+        <div class="hint">Paste the channel link. Its latest videos appear on the website automatically (refreshed every 30 minutes).</div></div>
+      <div class="field"><label>Journey photos (“From Classroom to Leadership”)</label>
+        <div class="two">
+          <div><div class="hint" style="margin:0 0 .4rem">1 · At work (shown first)</div><div class="drop" data-jp="journeyWorking">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyWorking"></div></div>
+          <div><div class="hint" style="margin:0 0 .4rem">2 · Looking at the camera</div><div class="drop" data-jp="journeyCamera">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyCamera"></div></div>
+        </div>
+        <input type="file" accept="image/*" class="hidden" id="jp-file">
+        <div class="hint">The website shows photo 1, then gently changes to photo 2, like a moment caught while working. Saved as soon as you choose a photo.</div></div>
+      <div class="field"><label>Email</label><input type="email" name="email" value="${esc(s.email)}" placeholder="name@school.edu"></div>
+      <div class="field"><label>LinkedIn</label><input type="url" name="linkedin" value="${esc(s.linkedin)}" placeholder="https://www.linkedin.com/in/…"></div>
+      <div class="field"><label>School website</label><input type="url" name="schoolWebsite" value="${esc(s.schoolWebsite)}" placeholder="https://…"></div>
+      <button class="btn primary" type="submit">Save settings</button>
+    </form>`;
+  let jpKey = null;
+  const drawJp = () => ['journeyWorking', 'journeyCamera'].forEach(k => {
+    const box = $(`[data-jp-thumb="${k}"]`); const u = content.settings[k];
+    box.innerHTML = u ? `<figure><img src="${esc(u)}" alt=""><button type="button" data-jp-rm="${k}" aria-label="Remove">×</button></figure>` : '';
+    const rm = box.querySelector('[data-jp-rm]');
+    if (rm) rm.onclick = async () => { delete content.settings[k]; await save('Photo removed.'); };
+  });
+  drawJp();
+  document.querySelectorAll('[data-jp]').forEach(d => d.onclick = () => { jpKey = d.dataset.jp; $('#jp-file').click(); });
+  $('#jp-file').onchange = async e => {
+    const file = e.target.files[0]; if (!file || !jpKey) return;
+    const drop = $(`[data-jp="${jpKey}"]`); drop.textContent = 'Uploading…';
+    try { content.settings[jpKey] = await uploadFile(file); await save('Journey photo updated.'); }
+    catch (err) { toast(err.message, true); drop.textContent = 'Tap to choose'; }
+    e.target.value = '';
+  };
+  $('#settings-form').onsubmit = async e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    content.settings = { ...content.settings, ...Object.fromEntries([...f.entries()].filter(([k]) => typeof k === 'string').map(([k, v]) => [k, String(v).trim()])) };
+    await save('Settings saved.');
+  };
+}
+
+function openEditor(kind, item) {
+  const c = COLLECTIONS[kind]; const isNew = !item;
+  const data = item ? structuredClone(item) : { id: uid() };
+  if (isNew) c.fields.forEach(f => { if (f.type === 'date') data[f.k] = today(); if ('default' in f) data[f.k] = f.default; });
+  const sheet = $('#sheet');
+  sheet.innerHTML = `<h2>${isNew ? 'New' : 'Edit'} ${c.noun}</h2><form id="ed">${c.fields.map(f => fieldHtml(f, data[f.k])).join('')}
+    <div class="sheet-acts"><button type="button" class="btn" data-cancel>Cancel</button><button class="btn primary" type="submit">${isNew ? 'Publish' : 'Save changes'}</button></div></form>`;
+  $('#editor').classList.remove('hidden'); sheet.scrollTop = 0;
+  const imgs = {};
+  c.fields.filter(f => f.type === 'image' || f.type === 'images').forEach(f => {
+    imgs[f.k] = f.type === 'images' ? [...(data[f.k] || [])] : (data[f.k] || '');
+    const box = sheet.querySelector(`[data-thumbs="${f.k}"]`);
+    const draw = () => {
+      const list = f.type === 'images' ? imgs[f.k] : (imgs[f.k] ? [imgs[f.k]] : []);
+      box.innerHTML = list.map((u, n) => `<figure><img src="${esc(u)}" alt=""><button type="button" data-rm="${n}" aria-label="Remove">×</button></figure>`).join('');
+      box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { if (f.type === 'images') imgs[f.k].splice(+b.dataset.rm, 1); else imgs[f.k] = ''; draw(); });
+    };
+    draw();
+    const input = sheet.querySelector(`[data-file="${f.k}"]`);
+    sheet.querySelector(`[data-pick="${f.k}"]`).onclick = () => input.click();
+    input.onchange = async () => {
+      const files = [...input.files]; const status = sheet.querySelector(`[data-status="${f.k}"]`);
+      for (const [n, file] of files.entries()) {
+        status.textContent = `Uploading ${n + 1} of ${files.length}…`;
+        try { const url = await uploadFile(file); if (f.type === 'images') imgs[f.k].push(url); else imgs[f.k] = url; draw(); }
+        catch (err) { toast(err.message, true); }
+      }
+      status.textContent = ''; input.value = '';
+    };
+  });
+  sheet.querySelector('[data-cancel]').onclick = closeEditor;
+  $('#ed').onsubmit = async e => {
+    e.preventDefault();
+    for (const f of c.fields) {
+      if (f.type === 'image' || f.type === 'images') data[f.k] = imgs[f.k];
+      else if (f.type === 'checkbox') data[f.k] = e.target.elements[f.k].checked;
+      else data[f.k] = e.target.elements[f.k].value.trim();
+      if (f.required && (!data[f.k] || (Array.isArray(data[f.k]) && !data[f.k].length))) { toast(`Please fill in “${f.label}”.`, true); return; }
+    }
+    if (kind === 'videos' && !ytId(data.url)) { toast('That does not look like a YouTube video link.', true); return; }
+    const btn = e.target.querySelector('[type=submit]'); btn.disabled = true;
+    const list = content[kind]; const at = list.findIndex(i => i.id === data.id);
+    const before = structuredClone(list);
+    if (at >= 0) list[at] = data; else list.push(data);
+    if (await save(isNew ? 'Published.' : 'Changes saved.')) closeEditor(); else { content[kind] = before; btn.disabled = false; }
+  };
+}
+function closeEditor() { $('#editor').classList.add('hidden'); $('#sheet').innerHTML = ''; }
+$('#editor').addEventListener('click', e => { if (e.target.id === 'editor' && confirm('Close without saving?')) closeEditor(); });
+
+function fieldHtml(f, v) {
+  const id = `f-${f.k}`; const hint = f.hint ? `<div class="hint">${esc(f.hint)}</div>` : '';
+  const ph = f.placeholder ? ` placeholder="${esc(f.placeholder)}"` : '';
+  if (f.type === 'textarea') return `<div class="field"><label for="${id}">${f.label}</label><textarea id="${id}" name="${f.k}" rows="${f.rows || 4}"${ph}>${esc(v)}</textarea>${hint}</div>`;
+  if (f.type === 'select') return `<div class="field"><label for="${id}">${f.label}</label><select id="${id}" name="${f.k}">${f.options.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select></div>`;
+  if (f.type === 'checkbox') return `<div class="field"><label class="check"><input type="checkbox" name="${f.k}"${v !== false ? ' checked' : ''}> ${f.label}</label></div>`;
+  if (f.type === 'image' || f.type === 'images') return `<div class="field"><label>${f.label}</label>
+    <div class="drop" data-pick="${f.k}">${f.type === 'images' ? 'Tap to add photos' : 'Tap to choose a photo'}</div>
+    <input type="file" accept="image/*" class="hidden" data-file="${f.k}"${f.type === 'images' ? ' multiple' : ''}>
+    <div class="hint" data-status="${f.k}"></div><div class="thumbs" data-thumbs="${f.k}"></div></div>`;
+  return `<div class="field"><label for="${id}">${f.label}</label><input type="${f.type}" id="${id}" name="${f.k}" value="${esc(v)}"${ph}>${hint}</div>`;
+}
+
+(async () => {
+  try { const r = await api('/api/me'); await showApp(r.user); }
+  catch { showLogin(); }
+})();
+</script>
+</body>
+</html>
+

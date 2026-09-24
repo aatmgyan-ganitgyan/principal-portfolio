@@ -1,10 +1,3 @@
-/**
- * ==========================================================================
- * PRINCIPAL PORTFOLIO — MAIN INTERACTIVITY & RENDERING ENGINE
- * Principal: Varsha Phukane
- * ==========================================================================
- */
-
 document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
     initNavbar();
@@ -23,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 });
 
-/* ----------------- 00. SCROLL PROGRESS & NAVBAR ----------------- */
 function initScrollProgress() {
     const progressBar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
@@ -40,7 +32,6 @@ function initNavbar() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    // Scroll state
     window.addEventListener('scroll', () => {
         if (window.scrollY > 40) {
             navbar.classList.add('shadow-xl', 'py-3.5');
@@ -52,7 +43,6 @@ function initNavbar() {
         highlightActiveSection();
     });
 
-    // Mobile menu toggle
     if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
@@ -65,7 +55,6 @@ function initNavbar() {
             lucide.createIcons();
         });
 
-        // Close on link click
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
@@ -98,7 +87,6 @@ function highlightActiveSection() {
     });
 }
 
-/* ----------------- 01. HERO SECTION ----------------- */
 function renderHero() {
     const data = PRINCIPAL_DATA.identity;
     const heroName = document.getElementById('hero-name');
@@ -122,14 +110,13 @@ function renderHero() {
     }
     if (heroBadges && data.badges) {
         heroBadges.innerHTML = data.badges.map(badge => `
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-amber-500/10 text-amber-200 border border-amber-500/25">
+            <span class="t-label inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/10 text-amber-200 border border-amber-500/25">
                 <i data-lucide="award" class="w-3.5 h-3.5 text-gold"></i> ${badge}
             </span>
         `).join('');
     }
 }
 
-/* ----------------- 02. BEYOND THE TITLE ----------------- */
 function renderBeyondTitle() {
     const person = PRINCIPAL_DATA.beyondTitle;
     const container = document.getElementById('person-cards-container');
@@ -146,56 +133,52 @@ function renderBeyondTitle() {
 
     if (container && person.cards) {
         container.innerHTML = person.cards.map(card => `
-            <div class="glass-card-light p-4 sm:p-5 rounded-2xl border border-amber-900/10 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col justify-between">
+            <div class="person-card glass-card-light card-pad rounded-2xl border border-amber-900/10">
+                <div class="w-10 h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900">
+                    <i data-lucide="${card.icon}" class="w-5 h-5"></i>
+                </div>
                 <div>
-                    <div class="flex items-center gap-2.5 sm:gap-3 mb-2 sm:mb-2.5">
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-100/80 flex items-center justify-center text-amber-900 group-hover:bg-amber-600 group-hover:text-white transition-colors flex-shrink-0 shadow-sm">
-                            <i data-lucide="${card.icon}" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <h4 class="text-base sm:text-lg font-serif font-bold text-slate-900 tracking-wide">${card.role}</h4>
-                            <span class="text-[10px] sm:text-xs uppercase tracking-wider text-amber-800 font-semibold block truncate">${card.subtitle}</span>
-                        </div>
+                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-1.5">
+                        <h3 class="t-h3 text-slate-900">${card.role}</h3>
+                        <span class="t-label text-amber-800">${card.subtitle}</span>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-[13px] leading-relaxed">${card.description}</p>
+                    <p class="t-body text-slate-600">${card.description}</p>
                 </div>
             </div>
         `).join('');
     }
 }
 
-/* ----------------- 03. MY JOURNEY ----------------- */
 function renderJourney() {
     const journey = PRINCIPAL_DATA.journey;
     const container = document.getElementById('journey-timeline-container');
     if (!container || !journey.milestones) return;
 
     container.innerHTML = journey.milestones.map((item) => `
-        <div class="timeline-card glass-card-dark p-7 rounded-2xl relative border border-slate-800 hover:border-gold/50 flex flex-col justify-between">
+        <div class="timeline-card glass-card-dark card-pad rounded-2xl relative border border-slate-800 hover:border-gold/50 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between gap-2 mb-3">
-                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-500/15 text-gold-light border border-gold/30">
+                    <span class="t-small font-bold px-3 py-0.5 rounded-full bg-amber-500/15 text-gold-light border border-gold/30">
                         ${item.year}
                     </span>
-                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+                    <span class="t-label text-slate-400 text-right">
                         ${item.institution}
                     </span>
                 </div>
-                <h4 class="text-xl font-serif font-bold text-white mb-2 group-hover:text-gold transition-colors">
+                <h3 class="t-h3 text-white mb-2">
                     ${item.position}
-                </h4>
-                <p class="text-slate-200 text-sm leading-relaxed mb-4 border-l-2 border-gold/60 pl-3 italic font-editorial text-base">
+                </h3>
+                <p class="t-body italic text-slate-200 mb-4 border-l-2 border-gold/60 pl-3">
                     "${item.achievement}"
                 </p>
             </div>
-            <p class="text-slate-400 text-xs leading-relaxed pt-3 border-t border-slate-800/80">
+            <p class="t-small text-slate-400 pt-3 border-t border-slate-800/80">
                 ${item.context}
             </p>
         </div>
     `).join('');
 }
 
-/* ----------------- 04. LEADERSHIP PHILOSOPHY ----------------- */
 function renderPhilosophy() {
     const phil = PRINCIPAL_DATA.philosophy;
     const quoteEl = document.getElementById('philosophy-quote');
@@ -205,16 +188,16 @@ function renderPhilosophy() {
 
     if (container && phil.pillars) {
         container.innerHTML = phil.pillars.map(pillar => `
-            <div class="p-8 rounded-2xl bg-white shadow-sm border border-slate-200/80 hover:shadow-xl hover:border-gold/50 transition-all group flex flex-col justify-between">
+            <div class="card-pad rounded-2xl bg-white shadow-sm border border-slate-200/80 hover:border-gold/50 transition-colors">
                 <div>
-                    <div class="w-8 h-1 bg-gold/70 mb-4 group-hover:w-12 transition-all duration-300"></div>
-                    <h4 class="text-xl font-serif font-bold text-slate-900 mb-1 tracking-wide">
+                    <div class="w-8 h-0.5 bg-gold/70 mb-4"></div>
+                    <h3 class="t-h3 text-slate-900 mb-1">
                         ${pillar.title}
-                    </h4>
-                    <p class="text-xs uppercase tracking-wider font-semibold text-amber-800 mb-4">
+                    </h3>
+                    <p class="t-small font-semibold text-amber-800 mb-3">
                         ${pillar.statement}
                     </p>
-                    <p class="text-slate-600 text-sm leading-relaxed">
+                    <p class="t-body text-slate-600">
                         ${pillar.description}
                     </p>
                 </div>
@@ -223,7 +206,6 @@ function renderPhilosophy() {
     }
 }
 
-/* ----------------- 05. IMPACT METRICS ----------------- */
 function renderImpact() {
     const impact = PRINCIPAL_DATA.impact;
     const metricsContainer = document.getElementById('impact-metrics-container');
@@ -231,13 +213,13 @@ function renderImpact() {
 
     if (metricsContainer && impact.stats) {
         metricsContainer.innerHTML = impact.stats.map(stat => `
-            <div class="glass-card-dark p-8 rounded-2xl text-center border border-slate-800 hover:border-gold/50 transition-all hover:-translate-y-1">
-                <div class="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold text-white mb-2 flex items-center justify-center">
+            <div class="glass-card-dark card-pad rounded-2xl text-center border border-slate-800 hover:border-gold/50 transition-colors">
+                <div class="font-serif font-bold text-white mb-2 flex items-center justify-center leading-none" style="font-size: clamp(2.5rem, 2rem + 1.6vw, 3.5rem)">
                     <span class="counter-val text-amber-300" data-target="${stat.value}">0</span>
                     <span class="text-gold">${stat.suffix}</span>
                 </div>
-                <h4 class="text-base sm:text-lg font-bold text-slate-100 mb-1">${stat.label}</h4>
-                <p class="text-xs text-slate-400 max-w-xs mx-auto">${stat.description}</p>
+                <h3 class="t-h3 text-slate-100 mb-1">${stat.label}</h3>
+                <p class="t-small text-slate-400 max-w-xs mx-auto">${stat.description}</p>
             </div>
         `).join('');
     }
@@ -248,7 +230,7 @@ function renderImpact() {
                 <div class="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center text-gold flex-shrink-0">
                     <i data-lucide="check" class="w-4 h-4"></i>
                 </div>
-                <span class="text-sm font-semibold text-slate-200 tracking-wide">${area}</span>
+                <span class="t-body font-semibold text-slate-200">${area}</span>
             </div>
         `).join('');
     }
@@ -261,7 +243,7 @@ function initCounters() {
                 const counters = entry.target.querySelectorAll('.counter-val');
                 counters.forEach(counter => {
                     const target = +counter.getAttribute('data-target');
-                    const duration = 1800; // ms
+                    const duration = 1800;
                     const stepTime = 25;
                     const steps = duration / stepTime;
                     const increment = target / steps;
@@ -286,42 +268,36 @@ function initCounters() {
     if (impactSection) observer.observe(impactSection);
 }
 
-/* ----------------- 06. SIGNATURE INITIATIVES ----------------- */
 function renderInitiatives() {
     const data = PRINCIPAL_DATA.initiatives;
     const container = document.getElementById('initiatives-container');
     if (!container || !data.cards) return;
 
     container.innerHTML = data.cards.map(item => `
-        <div class="initiative-card glass-card-light rounded-2xl p-8 border border-slate-200 bg-white hover:shadow-2xl transition-all cursor-pointer flex flex-col justify-between"
+        <div class="initiative-card glass-card-light rounded-2xl card-pad border border-slate-200 bg-white hover:shadow-2xl transition-all cursor-pointer flex flex-col justify-between"
              onclick="openInitiativeModal('${item.id}')">
             <div>
                 <div class="flex items-center justify-between gap-2 mb-4">
-                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900">
+                    <span class="t-label px-3 py-1 rounded-full bg-amber-100 text-amber-900">
                         Initiative
                     </span>
-                    <span class="text-xs text-amber-800 font-semibold flex items-center gap-1">
-                        <span>Details</span>
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                    </span>
                 </div>
-                <h4 class="text-2xl font-serif font-bold text-slate-900 mb-3 hover:text-amber-800 transition-colors">
+                <h3 class="t-h3 text-slate-900 mb-2">
                     ${item.title}
-                </h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                </h3>
+                <p class="t-body text-slate-600 mb-5">
                     ${item.summary}
                 </p>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-amber-800 font-semibold text-xs uppercase tracking-wider">
+            <div class="t-label pt-4 border-t border-slate-100 flex items-center justify-between gap-3 text-amber-800">
                 <span>View Full Case Study</span>
-                <span class="text-slate-500 font-medium lowercase">challenge → action → result</span>
+                <span class="text-slate-500 font-medium normal-case tracking-normal">Challenge, action, result</span>
             </div>
         </div>
     `).join('');
 }
 
-/* ----------------- 07. LIFE @ SCHOOL ----------------- */
 let currentCategory = 'all';
 
 function renderLifeAtSchool() {
@@ -330,7 +306,6 @@ function renderLifeAtSchool() {
     const filterContainer = document.getElementById('photo-filters');
     if (!container) return;
 
-    // Categories
     const categories = ['all', ...new Set(gallery.map(item => item.category))];
     if (filterContainer) {
         filterContainer.innerHTML = categories.map(cat => `
@@ -348,9 +323,9 @@ function renderLifeAtSchool() {
         <div class="photo-card aspect-[4/3] rounded-xl overflow-hidden relative group shadow-md" onclick="openLightbox(${idx})">
             <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover">
             <div class="photo-overlay">
-                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-300 mb-1">${item.category}</span>
-                <h5 class="text-lg font-serif font-bold text-white">${item.title}</h5>
-                <p class="text-xs text-slate-300 mt-1 line-clamp-2">${item.caption}</p>
+                <span class="t-label text-amber-300 mb-1">${item.category}</span>
+                <h3 class="t-h3 text-white">${item.title}</h3>
+                <p class="t-small text-slate-300 mt-1 line-clamp-2">${item.caption}</p>
             </div>
         </div>
     `).join('');
@@ -362,28 +337,27 @@ window.filterPhotos = function(category) {
     lucide.createIcons();
 };
 
-/* ----------------- 08. BEYOND SCHOOL ----------------- */
 function renderBeyondSchool() {
     const list = PRINCIPAL_DATA.beyondSchool.cards;
     const container = document.getElementById('beyond-school-container');
     if (!container) return;
 
     container.innerHTML = list.map(item => `
-        <div class="glass-card-dark p-8 rounded-2xl border border-slate-800 hover:border-gold/40 transition-all flex flex-col justify-between">
+        <div class="glass-card-dark card-pad rounded-2xl border border-slate-800 hover:border-gold/40 transition-colors flex flex-col justify-between">
             <div>
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-gold">
                         <i data-lucide="${item.icon}" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-widest text-gold block">${item.category}</span>
-                        <h4 class="text-xl font-serif font-bold text-white">${item.title}</h4>
+                        <span class="t-label text-gold block">${item.category}</span>
+                        <h3 class="t-h3 text-white">${item.title}</h3>
                     </div>
                 </div>
-                <p class="text-slate-300 text-sm leading-relaxed mb-6">${item.description}</p>
-                <div class="space-y-2 mb-6">
+                <p class="t-body text-slate-300 mb-4">${item.description}</p>
+                <div class="space-y-2 mb-5">
                     ${item.highlights.map(h => `
-                        <div class="flex items-start gap-2 text-xs text-slate-400">
+                        <div class="t-small flex items-start gap-2 text-slate-400">
                             <i data-lucide="check" class="w-3.5 h-3.5 text-gold flex-shrink-0 mt-0.5"></i>
                             <span>${h}</span>
                         </div>
@@ -397,28 +371,27 @@ function renderBeyondSchool() {
     `).join('');
 }
 
-/* ----------------- 09. THE PRINCIPAL'S VOICE ----------------- */
 function renderThoughts() {
     const articles = PRINCIPAL_DATA.thoughts.articles;
     const container = document.getElementById('thoughts-container');
     if (!container) return;
 
     container.innerHTML = articles.map(article => `
-        <article class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl border border-slate-200 transition-all flex flex-col justify-between cursor-pointer group"
+        <article class="card-pad rounded-2xl bg-white shadow-sm hover:shadow-lg border border-slate-200 transition-shadow flex flex-col justify-between cursor-pointer group"
                  onclick="openArticleModal('${article.id}')">
             <div>
-                <div class="flex items-center justify-between text-xs text-slate-500 font-semibold mb-3">
+                <div class="t-small flex items-center justify-between text-slate-500 font-semibold mb-3">
                     <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/60">${article.date}</span>
                     <span class="flex items-center gap-1 text-slate-500"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${article.readTime}</span>
                 </div>
-                <h4 class="text-2xl font-serif font-bold text-slate-900 mb-3 group-hover:text-amber-800 transition-colors">
+                <h3 class="t-h3 text-slate-900 mb-2 group-hover:text-amber-800 transition-colors">
                     ${article.title}
-                </h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3">
+                </h3>
+                <p class="t-body text-slate-600 mb-5 line-clamp-3">
                     ${article.description}
                 </p>
             </div>
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs uppercase tracking-wider font-bold text-amber-900">
+            <div class="t-label pt-4 border-t border-slate-100 flex items-center justify-between text-amber-900">
                 <span>Read Article</span>
                 <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </div>
@@ -426,7 +399,6 @@ function renderThoughts() {
     `).join('');
 }
 
-/* ----------------- 10. FINAL SIGNATURE & FOOTER ----------------- */
 function renderSignature() {
     const sig = PRINCIPAL_DATA.signature;
     const quoteEl = document.getElementById('signature-quote');
@@ -457,7 +429,6 @@ function renderSignature() {
     }
 }
 
-/* ----------------- MODALS ----------------- */
 function initModals() {
     document.querySelectorAll('.modal-backdrop').forEach(modal => {
         modal.addEventListener('click', (e) => {
@@ -477,7 +448,6 @@ function initModals() {
         btn.addEventListener('click', closeAllModals);
     });
 
-    // Contact modal submit
     const contactForm = document.getElementById('dialog-contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -501,7 +471,6 @@ function closeAllModals() {
     document.body.style.overflow = '';
 }
 
-// 1. Initiative Modal
 window.openInitiativeModal = function(initiativeId) {
     const item = PRINCIPAL_DATA.initiatives.cards.find(i => i.id === initiativeId);
     if (!item) return;
@@ -518,7 +487,6 @@ window.openInitiativeModal = function(initiativeId) {
     lucide.createIcons();
 };
 
-// 2. Article Reader Modal
 window.openArticleModal = function(articleId) {
     const article = PRINCIPAL_DATA.thoughts.articles.find(a => a.id === articleId);
     if (!article) return;
@@ -543,7 +511,6 @@ window.openArticleModal = function(articleId) {
     lucide.createIcons();
 };
 
-// 3. Photo Lightbox
 let activeLightboxIndex = 0;
 window.openLightbox = function(index) {
     activeLightboxIndex = index;
@@ -555,8 +522,8 @@ window.openLightbox = function(index) {
 
 function updateLightboxContent() {
     const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
-    const filtered = currentCategory === 'all' 
-        ? gallery 
+    const filtered = currentCategory === 'all'
+        ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
 
     const item = filtered[activeLightboxIndex];
@@ -570,8 +537,8 @@ function updateLightboxContent() {
 
 window.lightboxPrev = function() {
     const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
-    const filtered = currentCategory === 'all' 
-        ? gallery 
+    const filtered = currentCategory === 'all'
+        ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
     activeLightboxIndex = (activeLightboxIndex - 1 + filtered.length) % filtered.length;
     updateLightboxContent();
@@ -579,14 +546,13 @@ window.lightboxPrev = function() {
 
 window.lightboxNext = function() {
     const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
-    const filtered = currentCategory === 'all' 
-        ? gallery 
+    const filtered = currentCategory === 'all'
+        ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
     activeLightboxIndex = (activeLightboxIndex + 1) % filtered.length;
     updateLightboxContent();
 };
 
-// 4. Contact Modal
 window.openContactModal = function() {
     const modal = document.getElementById('contact-modal');
     modal.classList.add('active');
