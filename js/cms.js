@@ -152,51 +152,53 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#060B18;color:#e2e8f0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
-header{background:#0B1326;border-bottom:1px solid rgba(197,168,128,.15);padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;text-decoration:none;transition:color .2s}.back:hover{color:#C5A880}
+body{background:#F8F7F4;color:#1e293b;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
+header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;text-decoration:none;transition:color .2s}.back:hover{color:#A08257}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;padding:1.5rem}
-.card{background:#101B35;border:1px solid rgba(255,255,255,.08);border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s;display:flex;flex-direction:column}
-.card:hover{border-color:rgba(197,168,128,.4);transform:translateY(-2px)}
-.card-img{aspect-ratio:16/9;overflow:hidden;background:#0B1326}
+.card{background:#fff;border:1px solid #e8e6e0;border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card:hover{border-color:#C5A880;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.card-img{aspect-ratio:16/9;overflow:hidden;background:#f1efe8}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}.card:hover .card-img img{transform:scale(1.04)}
 .card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
-.card-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74}
-.card-title{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:#fff;line-height:1.3}
-.card-desc{font-size:0.8rem;color:#94a3b8;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:auto}
-.card-meta{font-size:0.7rem;color:#C5A880;font-weight:600;margin-top:0.5rem}
+.card-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A08257}
+.card-title{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:#1e293b;line-height:1.3}
+.card-desc{font-size:0.8rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:auto}
+.card-meta{font-size:0.7rem;color:#A08257;font-weight:600;margin-top:0.5rem}
 /* Modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(6,11,24,.92);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(30,41,59,.7);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
 .modal-bg.open{display:flex}
-.modal{background:#101B35;border:1px solid rgba(197,168,128,.2);border-radius:1.25rem;max-width:680px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative}
-.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:50%;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s}
-.modal-close:hover{background:#C5A880;color:#060B18;border-color:#C5A880}
-.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:0.5rem}
-.modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:1rem}
+.modal{background:#fff;border:1px solid #e8e6e0;border-radius:1.25rem;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:#f1efe8;border:1px solid #e2e0d8;color:#64748b;border-radius:50%;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.modal-close:hover{background:#C5A880;color:#fff;border-color:#C5A880}
+.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A08257;margin-bottom:0.5rem}
+.modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:800;color:#1e293b;line-height:1.2;margin-bottom:1rem}
 .modal-cover{width:100%;border-radius:0.75rem;margin-bottom:1.25rem;aspect-ratio:16/9;object-fit:cover}
-.modal-desc{font-size:0.9rem;color:#cbd5e1;line-height:1.7;margin-bottom:1.25rem}
-.modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem;margin-top:1rem}
-.modal-photos a img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:0.5rem;transition:transform .2s}
-.modal-photos a:hover img{transform:scale(1.03)}
-/* Photo lightbox */
-.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.modal-desc{font-size:0.9rem;color:#475569;line-height:1.8;margin-bottom:1.25rem}
+.modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.6rem;margin-top:1rem}
+.modal-photos a{display:block;border-radius:0.5rem;overflow:hidden;cursor:zoom-in}
+.modal-photos a img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .25s;display:block}
+.modal-photos a:hover img{transform:scale(1.05)}
+/* Lightbox — fullscreen dark overlay, image as big as possible */
+.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:0}
 .lb.open{display:flex}
-.lb-inner{max-width:860px;width:100%;display:flex;flex-direction:column;align-items:center;gap:1rem;position:relative}
-.lb-img{max-width:100%;max-height:75vh;border-radius:0.75rem;object-fit:contain}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.75rem;height:2.75rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;transition:all .2s}
-.lb-nav:hover{background:#C5A880;color:#060B18}
-.lb-prev{left:0}.lb-next{right:0}
-.lb-close{position:absolute;top:0.5rem;right:0.5rem;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.25rem;height:2.25rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;z-index:10}
+.lb-img-wrap{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+.lb-img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:6px;display:block}
+.lb-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:50%;width:3rem;height:3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.6rem;transition:all .2s;z-index:10000}
+.lb-nav:hover{background:#C5A880;color:#060B18;border-color:#C5A880}
+.lb-prev{left:1rem}.lb-next{right:1rem}
+.lb-close{position:fixed;top:1rem;right:1rem;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:50%;width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;z-index:10000;transition:all .2s}
 .lb-close:hover{background:#C5A880;color:#060B18}
-.lb-counter{font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:#101B35;border:1px solid rgba(197,168,128,.25);padding:0.25rem 0.75rem;border-radius:999px}
-.lb-done{display:none;padding:0.4rem 1.25rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
+.lb-footer{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0.75rem;z-index:10000}
+.lb-counter{font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:rgba(6,11,24,.8);border:1px solid rgba(197,168,128,.3);padding:0.3rem 0.9rem;border-radius:999px}
+.lb-done{display:none;padding:0.4rem 1.4rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
 </style>
 </head>
 <body>
 <header>
   <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
-  <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C5A880">Events &amp; Celebrations</div>
-  <span style="font-size:0.75rem;color:#64748b" id="ev-count"></span>
+  <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#A08257">Events &amp; Celebrations</div>
+  <span style="font-size:0.75rem;color:#94a3b8" id="ev-count"></span>
 </header>
 <div class="grid" id="ev-grid"></div>
 
@@ -213,17 +215,17 @@ header{background:#0B1326;border-bottom:1px solid rgba(197,168,128,.15);padding:
   </div>
 </div>
 
-<!-- Photo Lightbox -->
+<!-- Photo Lightbox — fullscreen -->
 <div class="lb" id="lb">
   <button class="lb-close" onclick="lbClose()">✕</button>
-  <div class="lb-inner">
+  <div class="lb-img-wrap">
     <img class="lb-img" id="lb-img" src="" alt="">
-    <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
-    <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-    <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.25rem">
-      <span class="lb-counter" id="lb-counter"></span>
-      <button class="lb-done" id="lb-done" onclick="lbClose()">Done Viewing</button>
-    </div>
+  </div>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+  <div class="lb-footer">
+    <span class="lb-counter" id="lb-counter"></span>
+    <button class="lb-done" id="lb-done" onclick="lbClose()">Done Viewing</button>
   </div>
 </div>
 
@@ -302,7 +304,7 @@ function lbNav(dir) {
 }
 function lbClose() {
   document.getElementById('lb').classList.remove('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = '';
 }
 document.getElementById('lb').addEventListener('click', function(e) { if (e.target === this) lbClose(); });
 document.addEventListener('keydown', function(e) {
