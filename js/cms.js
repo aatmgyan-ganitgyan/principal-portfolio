@@ -292,7 +292,13 @@ function openLb(i) {
 function lbShow() {
   document.getElementById('lb-img').src = lbPhotos[lbIdx];
   document.getElementById('lb-num').textContent = (lbIdx+1) + ' / ' + lbPhotos.length;
-  document.getElementById('lb-done').style.display = lbIdx === lbPhotos.length-1 ? '' : 'none';
+  var isLast = lbIdx === lbPhotos.length - 1;
+  var isFirst = lbIdx === 0;
+  document.getElementById('lb-done').style.display = isLast ? '' : 'none';
+  document.getElementById('lb-next').style.opacity = isLast ? '0.25' : '1';
+  document.getElementById('lb-next').style.pointerEvents = isLast ? 'none' : '';
+  document.getElementById('lb-prev').style.opacity = isFirst ? '0.25' : '1';
+  document.getElementById('lb-prev').style.pointerEvents = isFirst ? 'none' : '';
 }
 function closeLb() {
   document.getElementById('lb').classList.remove('open');
@@ -300,13 +306,13 @@ function closeLb() {
 }
 document.getElementById('lb-x').addEventListener('click', closeLb);
 document.getElementById('lb-done').addEventListener('click', closeLb);
-document.getElementById('lb-prev').addEventListener('click', function(){ lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length; lbShow(); });
-document.getElementById('lb-next').addEventListener('click', function(){ lbIdx=(lbIdx+1)%lbPhotos.length; lbShow(); });
+document.getElementById('lb-prev').addEventListener('click', function(){ if(lbIdx>0){lbIdx--; lbShow();} });
+document.getElementById('lb-next').addEventListener('click', function(){ if(lbIdx<lbPhotos.length-1){lbIdx++; lbShow();} });
 document.getElementById('lb').addEventListener('click', function(ev){ if(ev.target===this) closeLb(); });
 document.addEventListener('keydown', function(ev){
   if (document.getElementById('lb').classList.contains('open')) {
-    if (ev.key==='ArrowLeft') { lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length; lbShow(); }
-    if (ev.key==='ArrowRight') { lbIdx=(lbIdx+1)%lbPhotos.length; lbShow(); }
+    if (ev.key==='ArrowLeft' && lbIdx>0) { lbIdx--; lbShow(); }
+    if (ev.key==='ArrowRight' && lbIdx<lbPhotos.length-1) { lbIdx++; lbShow(); }
     if (ev.key==='Escape') closeLb();
   } else if (document.getElementById('ev-modal').classList.contains('open')) {
     if (ev.key==='Escape') closeEv();
