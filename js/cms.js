@@ -232,7 +232,7 @@ header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;posit
 .modal-cover{width:100%;border-radius:0.75rem;margin-bottom:1.25rem;aspect-ratio:16/9;object-fit:cover}
 .modal-desc p{font-size:0.9rem;color:#475569;line-height:1.8;margin-bottom:0.75rem}
 .photos-label{font-size:0.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A08257;margin:1rem 0 0.6rem}
-.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem}
+.photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
 .photo-thumb{border-radius:0.5rem;overflow:hidden;cursor:zoom-in;aspect-ratio:4/3}
 .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}.photo-thumb:hover img{transform:scale(1.06)}
 /* Lightbox */
