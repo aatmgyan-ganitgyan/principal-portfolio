@@ -125,9 +125,21 @@
         let c;
         try {
             const res = await fetch('/api/content');
-            if (!res.ok) return;
-            c = await res.json();
-        } catch (e) { return; }
+            if (res.ok) {
+                c = await res.json();
+            } else {
+                throw new Error('api fallback');
+            }
+        } catch (e) {
+            try {
+                const res2 = await fetch('/content.json');
+                if (res2.ok) c = await res2.json();
+                else return;
+            } catch (err) {
+                return;
+            }
+        }
+        if (!c) return;
         const D = window.PRINCIPAL_DATA || (typeof PRINCIPAL_DATA !== 'undefined' ? PRINCIPAL_DATA : null);
         if (!D) return;
 
