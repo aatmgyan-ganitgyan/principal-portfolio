@@ -144,7 +144,7 @@
     }
 
     window.openAllEventsPage = function() {
-        const eventsJson = JSON.stringify(events);
+        const evData = JSON.stringify(events);
 
         const html = `<!DOCTYPE html><html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -153,172 +153,168 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#F8F7F4;color:#1e293b;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
-header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 1px 8px rgba(0,0,0,.06)}
-.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;text-decoration:none;transition:color .2s}.back:hover{color:#A08257}
+header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;text-decoration:none}.back:hover{color:#A08257}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;padding:1.5rem}
 .card{background:#fff;border:1px solid #e8e6e0;border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card:hover{border-color:#C5A880;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
 .card-img{aspect-ratio:16/9;overflow:hidden;background:#f1efe8}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}.card:hover .card-img img{transform:scale(1.04)}
-.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
+.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.4rem}
 .card-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A08257}
 .card-title{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:#1e293b;line-height:1.3}
-.card-desc{font-size:0.8rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:auto}
-.card-meta{font-size:0.7rem;color:#A08257;font-weight:600;margin-top:0.5rem}
+.card-desc{font-size:0.8rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{font-size:0.7rem;color:#A08257;font-weight:600;margin-top:0.25rem}
 /* Modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(30,41,59,.7);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
 .modal-bg.open{display:flex}
-.modal{background:#fff;border:1px solid #e8e6e0;border-radius:1.25rem;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.modal-close{position:absolute;top:1rem;right:1rem;background:#f1efe8;border:1px solid #e2e0d8;color:#64748b;border-radius:50%;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s}
-.modal-close:hover{background:#C5A880;color:#fff;border-color:#C5A880}
-.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A08257;margin-bottom:0.5rem}
+.modal{background:#fff;border-radius:1.25rem;max-width:700px;width:100%;max-height:92vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+.modal-x{position:absolute;top:1rem;right:1rem;background:#f1efe8;border:none;border-radius:50%;width:2rem;height:2rem;cursor:pointer;font-size:1rem;color:#64748b;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.modal-x:hover{background:#C5A880;color:#fff}
+.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A08257;margin-bottom:0.4rem}
 .modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:800;color:#1e293b;line-height:1.2;margin-bottom:1rem}
 .modal-cover{width:100%;border-radius:0.75rem;margin-bottom:1.25rem;aspect-ratio:16/9;object-fit:cover}
-.modal-desc{font-size:0.9rem;color:#475569;line-height:1.8;margin-bottom:1.25rem}
-.modal-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.6rem;margin-top:1rem}
-.photo-thumb{border-radius:0.5rem;overflow:hidden;cursor:zoom-in}
-.photo-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .25s;display:block}
-.photo-thumb:hover img{transform:scale(1.05)}
-/* Lightbox — fullscreen dark overlay, image as big as possible */
-.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:99999;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.modal-desc p{font-size:0.9rem;color:#475569;line-height:1.8;margin-bottom:0.75rem}
+.photos-label{font-size:0.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A08257;margin:1rem 0 0.6rem}
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem}
+.photo-thumb{border-radius:0.5rem;overflow:hidden;cursor:zoom-in;aspect-ratio:4/3}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}.photo-thumb:hover img{transform:scale(1.06)}
+/* Lightbox */
+.lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:9999;align-items:center;justify-content:center}
 .lb.open{display:flex}
-.lb-img-wrap{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
-.lb-img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:6px;display:block}
-.lb-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:50%;width:3rem;height:3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.6rem;transition:all .2s;z-index:10000}
-.lb-nav:hover{background:#C5A880;color:#060B18;border-color:#C5A880}
+.lb img{max-width:94vw;max-height:90vh;object-fit:contain;border-radius:6px;display:block}
+.lb-x{position:fixed;top:1rem;right:1rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:2.5rem;height:2.5rem;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:10000}.lb-x:hover{background:#C5A880}
+.lb-arr{position:fixed;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:3rem;height:3rem;cursor:pointer;font-size:1.6rem;display:flex;align-items:center;justify-content:center;z-index:10000}.lb-arr:hover{background:#C5A880}
 .lb-prev{left:1rem}.lb-next{right:1rem}
-.lb-close{position:fixed;top:1rem;right:1rem;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:50%;width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;z-index:10000;transition:all .2s}
-.lb-close:hover{background:#C5A880;color:#060B18}
-.lb-footer{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0.75rem;z-index:10000}
-.lb-counter{font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:rgba(6,11,24,.8);border:1px solid rgba(197,168,128,.3);padding:0.3rem 0.9rem;border-radius:999px}
-.lb-done{display:none;padding:0.4rem 1.4rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
-</style>
-</head>
+.lb-bar{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0.75rem;z-index:10000}
+.lb-num{font-size:0.7rem;font-weight:700;letter-spacing:.1em;color:#C5A880;background:rgba(6,11,24,.8);border:1px solid rgba(197,168,128,.3);padding:0.3rem 0.9rem;border-radius:999px}
+.lb-done{display:none;padding:0.35rem 1.25rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
+</style></head>
 <body>
 <header>
   <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
-  <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#A08257">Events &amp; Celebrations</div>
-  <span style="font-size:0.75rem;color:#94a3b8" id="ev-count"></span>
+  <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#A08257">Events &amp; Celebrations</div>
+  <span id="ev-count" style="font-size:0.75rem;color:#94a3b8"></span>
 </header>
 <div class="grid" id="ev-grid"></div>
 
-<!-- Event Modal -->
 <div class="modal-bg" id="ev-modal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-x" id="modal-x">✕</button>
     <div class="modal-date" id="m-date"></div>
     <div class="modal-title" id="m-title"></div>
     <img class="modal-cover" id="m-cover" src="" alt="" style="display:none">
-    <div class="modal-desc" id="m-desc"></div>
+    <div id="m-desc" class="modal-desc"></div>
     <div id="m-video"></div>
-    <div class="modal-photos" id="m-photos"></div>
+    <div id="m-photos-wrap" style="display:none">
+      <div class="photos-label">Photos</div>
+      <div class="photos-grid" id="m-photos"></div>
+    </div>
   </div>
 </div>
 
-<!-- Photo Lightbox — fullscreen -->
 <div class="lb" id="lb">
-  <button class="lb-close" onclick="lbClose()">✕</button>
-  <div class="lb-img-wrap">
-    <img class="lb-img" id="lb-img" src="" alt="">
-  </div>
-  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
-  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-  <div class="lb-footer">
-    <span class="lb-counter" id="lb-counter"></span>
-    <button class="lb-done" id="lb-done" onclick="lbClose()">Done Viewing</button>
+  <button class="lb-x" id="lb-x">✕</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-arr lb-prev" id="lb-prev">&#8249;</button>
+  <button class="lb-arr lb-next" id="lb-next">&#8250;</button>
+  <div class="lb-bar">
+    <span class="lb-num" id="lb-num"></span>
+    <button class="lb-done" id="lb-done">Done Viewing</button>
   </div>
 </div>
 
 <script>
-const __events = ${eventsJson};
-let __lbPhotos = [], __lbIdx = 0;
+var EV = ${evData};
+var lbPhotos = [], lbIdx = 0;
 
 function fmtDate(d) {
   if (!d) return '';
-  const dt = new Date(d);
+  var dt = new Date(d);
   return isNaN(dt) ? d : dt.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
 }
 function ytId(u) {
   if (!u) return '';
-  const m = u.match(/(?:v=|youtu\\.be\\/)([\\w-]{11})/);
+  var m = u.match(/(?:v=|youtu\\.be\\/)([\\w-]{11})/);
   return m ? m[1] : '';
 }
 
-// Render cards
-document.getElementById('ev-count').textContent = __events.length + ' events';
-document.getElementById('ev-grid').innerHTML = __events.map((e,i) => \`
-  <div class="card" onclick="openModal(\${i})">
-    \${e.cover ? \`<div class="card-img"><img src="\${e.cover}" alt="" loading="lazy"></div>\` : ''}
-    <div class="card-body">
-      <div class="card-date">\${fmtDate(e.date)}\${e.location ? ' · ' + e.location : ''}</div>
-      <div class="card-title">\${e.title}</div>
-      <div class="card-desc">\${e.description || ''}</div>
-      \${(e.photos||[]).length || ytId(e.youtube) ? \`<div class="card-meta">\${[
-        (e.photos||[]).length ? (e.photos||[]).length + ' photos' : '',
-        ytId(e.youtube) ? 'video' : ''
-      ].filter(Boolean).join(' · ')}</div>\` : ''}
-    </div>
-  </div>\`).join('');
+document.getElementById('ev-count').textContent = EV.length + ' events';
+document.getElementById('ev-grid').innerHTML = EV.map(function(e,i){
+  return '<div class="card" onclick="openEv('+i+')">'
+    + (e.cover ? '<div class="card-img"><img src="'+e.cover+'" alt="" loading="lazy"></div>' : '')
+    + '<div class="card-body">'
+    + '<div class="card-date">'+fmtDate(e.date)+(e.location?' · '+e.location:'')+'</div>'
+    + '<div class="card-title">'+(e.title||'')+'</div>'
+    + '<div class="card-desc">'+(e.description||'').slice(0,120)+'</div>'
+    + ((e.photos||[]).length ? '<div class="card-meta">'+(e.photos||[]).length+' photos</div>' : '')
+    + '</div></div>';
+}).join('');
 
-function openModal(idx) {
-  const e = __events[idx];
-  document.getElementById('m-date').textContent = fmtDate(e.date) + (e.location ? ' · ' + e.location : '');
-  document.getElementById('m-title').textContent = e.title;
-  const cover = document.getElementById('m-cover');
-  if (e.cover) { cover.src = e.cover; cover.style.display = ''; } else { cover.style.display = 'none'; }
-  document.getElementById('m-desc').innerHTML = (e.description || '').split(/\\n{2,}/).filter(Boolean).map(p => \`<p style="margin-bottom:0.75rem">\${p.replace(/\\n/g,'<br>')}</p>\`).join('');
-  const vid = ytId(e.youtube);
-  document.getElementById('m-video').innerHTML = vid ? \`<div style="position:relative;aspect-ratio:16/9;border-radius:0.75rem;overflow:hidden;background:#000;margin:1rem 0"><iframe src="https://www.youtube-nocookie.com/embed/\${vid}?rel=0" title="Video" allow="autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>\` : '';
-  const photos = e.photos || [];
-  __lbPhotos = photos;
-  document.getElementById('m-photos').innerHTML = photos.map((u,i) => `<div class="photo-thumb" onclick="event.stopPropagation();lbOpen(${i})"><img src="${u}" alt="" loading="lazy"></div>`).join('');
+function openEv(i) {
+  var e = EV[i];
+  document.getElementById('m-date').textContent = fmtDate(e.date) + (e.location ? ' · '+e.location : '');
+  document.getElementById('m-title').textContent = e.title || '';
+  var cov = document.getElementById('m-cover');
+  if (e.cover) { cov.src = e.cover; cov.style.display = ''; } else { cov.style.display = 'none'; }
+  document.getElementById('m-desc').innerHTML = (e.description||'').split(/\\n{2,}/).filter(Boolean).map(function(p){ return '<p>'+p.replace(/\\n/g,'<br>')+'</p>'; }).join('');
+  var vid = ytId(e.youtube);
+  document.getElementById('m-video').innerHTML = vid
+    ? '<div style="position:relative;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000;margin:1rem 0"><iframe src="https://www.youtube-nocookie.com/embed/'+vid+'?rel=0" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>'
+    : '';
+  lbPhotos = e.photos || [];
+  var wrap = document.getElementById('m-photos-wrap');
+  var grid = document.getElementById('m-photos');
+  if (lbPhotos.length) {
+    grid.innerHTML = lbPhotos.map(function(u,j){ return '<div class="photo-thumb" data-idx="'+j+'"><img src="'+u+'" alt="" loading="lazy"></div>'; }).join('');
+    grid.querySelectorAll('.photo-thumb').forEach(function(el){
+      el.addEventListener('click', function(ev){ ev.stopPropagation(); openLb(parseInt(this.dataset.idx)); });
+    });
+    wrap.style.display = '';
+  } else { wrap.style.display = 'none'; }
   document.getElementById('ev-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal() {
+document.getElementById('modal-x').addEventListener('click', closeEv);
+document.getElementById('ev-modal').addEventListener('click', function(ev){ if (ev.target === this) closeEv(); });
+function closeEv() {
   document.getElementById('ev-modal').classList.remove('open');
   document.getElementById('m-video').innerHTML = '';
   document.body.style.overflow = '';
 }
 
-document.getElementById('ev-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-function lbOpen(idx) {
-  __lbIdx = idx;
-  lbShow();
+function openLb(i) {
+  lbIdx = i; lbShow();
   document.getElementById('lb').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function lbShow() {
-  document.getElementById('lb-img').src = __lbPhotos[__lbIdx];
-  document.getElementById('lb-counter').textContent = (__lbIdx+1) + ' / ' + __lbPhotos.length;
-  document.getElementById('lb-done').style.display = __lbIdx === __lbPhotos.length - 1 ? '' : 'none';
-  document.getElementById('lb-nav' in document ? 'lb-prev' : 'lb-prev').style.display = __lbPhotos.length > 1 ? '' : 'none';
+  document.getElementById('lb-img').src = lbPhotos[lbIdx];
+  document.getElementById('lb-num').textContent = (lbIdx+1) + ' / ' + lbPhotos.length;
+  document.getElementById('lb-done').style.display = lbIdx === lbPhotos.length-1 ? '' : 'none';
 }
-function lbNav(dir) {
-  __lbIdx = (__lbIdx + dir + __lbPhotos.length) % __lbPhotos.length;
-  lbShow();
-}
-function lbClose() {
+function closeLb() {
   document.getElementById('lb').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow = 'hidden';
 }
-document.getElementById('lb').addEventListener('click', function(e) { if (e.target === this) lbClose(); });
-document.addEventListener('keydown', function(e) {
+document.getElementById('lb-x').addEventListener('click', closeLb);
+document.getElementById('lb-done').addEventListener('click', closeLb);
+document.getElementById('lb-prev').addEventListener('click', function(){ lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length; lbShow(); });
+document.getElementById('lb-next').addEventListener('click', function(){ lbIdx=(lbIdx+1)%lbPhotos.length; lbShow(); });
+document.getElementById('lb').addEventListener('click', function(ev){ if(ev.target===this) closeLb(); });
+document.addEventListener('keydown', function(ev){
   if (document.getElementById('lb').classList.contains('open')) {
-    if (e.key === 'ArrowLeft') lbNav(-1);
-    if (e.key === 'ArrowRight') lbNav(1);
-    if (e.key === 'Escape') lbClose();
+    if (ev.key==='ArrowLeft') { lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length; lbShow(); }
+    if (ev.key==='ArrowRight') { lbIdx=(lbIdx+1)%lbPhotos.length; lbShow(); }
+    if (ev.key==='Escape') closeLb();
   } else if (document.getElementById('ev-modal').classList.contains('open')) {
-    if (e.key === 'Escape') closeModal();
+    if (ev.key==='Escape') closeEv();
   }
 });
 </script>
 </body></html>`;
-        const blob = new Blob([html], { type: 'text/html' });
+        var blob = new Blob([html], { type: 'text/html' });
         window.open(URL.createObjectURL(blob), '_blank');
     };
 
