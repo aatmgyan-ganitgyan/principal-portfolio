@@ -14,6 +14,32 @@ function getLocalContent() {
     return { version: 1, blog: [], photos: [], events: [], videos: [], settings: {} };
 }
 
+function mergeContent(remote, local) {
+    if (!remote || typeof remote !== 'object') return local;
+    const res = { ...local, ...remote };
+
+    // If remote has no events but local has events, keep local events
+    if ((!remote.events || remote.events.length === 0) && (local.events && local.events.length > 0)) {
+        res.events = local.events;
+    }
+
+    // Merge photos so newly uploaded and baseline photos are both present
+    const photos = [...(remote.photos || [])];
+    const seen = new Set(photos.map(p => p.url || p.id));
+    for (const p of (local.photos || [])) {
+        if (!seen.has(p.url || p.id)) {
+            photos.push(p);
+            seen.add(p.url || p.id);
+        }
+    }
+    res.photos = photos;
+
+    // Merge settings
+    res.settings = { ...(local.settings || {}), ...(remote.settings || {}) };
+
+    return res;
+}
+
 module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,6 +48,8 @@ module.exports = async (req, res) => {
 
     if (req.method === 'OPTIONS') return res.status(200).end();
 
+    const localContent = getLocalContent();
+
     if (req.method === 'GET') {
         try {
             if (process.env.BLOB_READ_WRITE_TOKEN) {
@@ -29,14 +57,14 @@ module.exports = async (req, res) => {
                 if (blobs && blobs.length > 0) {
                     const r = await fetch(blobs[0].url + '?t=' + Date.now(), { cache: 'no-store' });
                     if (r.ok) {
-                        const data = await r.json();
-                        return res.status(200).json(data);
+                        const remoteData = await r.json();
+                        return res.status(200).json(mergeContent(remoteData, localContent));
                     }
                 }
             }
-            return res.status(200).json(getLocalContent());
+            return res.status(200).json(localContent);
         } catch (e) {
-            return res.status(200).json(getLocalContent());
+            return res.status(200).json(localContent);
         }
     }
 
