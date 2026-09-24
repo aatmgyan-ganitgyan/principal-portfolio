@@ -319,7 +319,10 @@ function renderLifeAtSchool() {
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
 
-    container.innerHTML = filtered.map((item, idx) => `
+    const PHOTO_LIMIT = 6;
+    const visible = filtered.slice(0, PHOTO_LIMIT);
+
+    container.innerHTML = visible.map((item, idx) => `
         <div class="photo-card aspect-[4/3] rounded-xl overflow-hidden relative group shadow-md" onclick="openLightbox(${idx})">
             <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover">
             <div class="photo-overlay">
@@ -329,12 +332,174 @@ function renderLifeAtSchool() {
             </div>
         </div>
     `).join('');
+
+    // Remove existing "View All" button if present
+    const existingBtn = container.parentElement.querySelector('.view-all-photos-btn');
+    if (existingBtn) existingBtn.remove();
+
+    if (filtered.length > PHOTO_LIMIT) {
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'view-all-photos-btn text-center mt-8';
+        btnWrap.innerHTML = `<button onclick="openAllPhotosPage()" class="btn-outline-gold inline-flex items-center gap-2 px-8 py-3 text-sm">
+            <i data-lucide="images" class="w-4 h-4"></i>
+            <span>View All ${filtered.length} Photos</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>
+        </button>`;
+        container.parentElement.appendChild(btnWrap);
+        if (window.lucide) lucide.createIcons();
+    }
 }
 
 window.filterPhotos = function(category) {
     currentCategory = category;
     renderLifeAtSchool();
     lucide.createIcons();
+};
+
+window.openAllPhotosPage = function() {
+    const gallery = PRINCIPAL_DATA.lifeAtSchool.gallery;
+    const categories = ['all', ...new Set(gallery.map(item => item.category))];
+
+    const cardHtml = gallery.map((item, idx) => `
+        <div style="cursor:pointer;position:relative;aspect-ratio:4/3;border-radius:0.75rem;overflow:hidden;background:#101B35"
+             onclick="__lightbox(${idx})"
+             class="photo-card group shadow-md">
+            <img src="${item.image}" alt="${item.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+            <div class="photo-overlay">
+                <span style="font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;display:block;margin-bottom:0.25rem">${item.category}</span>
+                <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;font-weight:700;color:#fff;line-height:1.25">${item.title}</h3>
+                <p style="font-size:0.75rem;color:#cbd5e1;margin-top:0.25rem">${item.caption}</p>
+            </div>
+        </div>`).join('');
+
+    const filterBtns = categories.map(cat => `
+        <button onclick="__filterAll('${cat}',this)"
+            style="padding:0.4rem 1rem;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(197,168,128,.35);color:${cat==='all'?'#060B18':'#cbd5e1'};background:${cat==='all'?'#C5A880':'transparent'};transition:all .2s"
+            class="all-photos-filter">
+            ${cat === 'all' ? 'All Moments' : cat}
+        </button>`).join('');
+
+    const html = `<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photo Stories — Varsha Phukane</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060B18;color:#e2e8f0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
+header{background:#0B1326;border-bottom:1px solid rgba(197,168,128,.15);padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.header-title{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C5A880}
+.header-back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color .2s}
+.header-back:hover{color:#C5A880}
+.filters{display:flex;flex-wrap:wrap;gap:0.5rem;padding:1.25rem 1.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;padding:0 1.5rem 3rem}
+.photo-card{cursor:pointer;position:relative;border-radius:0.75rem;overflow:hidden;background:#101B35;aspect-ratio:4/3}
+.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.photo-card:hover img{transform:scale(1.04)}
+.photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,11,24,.85) 0%,rgba(6,11,24,.1) 60%);opacity:0;transition:opacity .3s;padding:1rem;display:flex;flex-direction:column;justify-content:flex-end}
+.photo-card:hover .photo-overlay{opacity:1}
+/* Lightbox */
+#lb{display:none;position:fixed;inset:0;background:rgba(6,11,24,.97);z-index:100;align-items:center;justify-content:center;padding:1rem}
+#lb.open{display:flex}
+#lb-inner{max-width:900px;width:100%;display:flex;flex-direction:column;align-items:center;gap:1rem}
+#lb-img{max-width:100%;max-height:72vh;border-radius:0.75rem;object-fit:contain}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.75rem;height:2.75rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;font-size:1.2rem}
+.lb-nav:hover{background:#C5A880;color:#060B18}
+#lb-prev{left:0.75rem}
+#lb-next{right:0.75rem}
+#lb-close{position:absolute;top:0.75rem;right:0.75rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem}
+#lb-close:hover{background:#C5A880;color:#060B18}
+#lb-counter{font-size:0.7rem;font-weight:700;letter-spacing:.12em;color:#C5A880;background:#101B35;border:1px solid rgba(197,168,128,.25);padding:0.25rem 0.75rem;border-radius:999px}
+#lb-done{display:none;padding:0.5rem 1.5rem;border-radius:999px;background:#C5A880;color:#060B18;font-weight:700;font-size:0.75rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;margin-top:0.25rem}
+</style>
+</head>
+<body>
+<header>
+    <a href="javascript:window.close()" class="header-back">← Back to Portfolio</a>
+    <div class="header-title">Photo Stories</div>
+    <span style="font-size:0.75rem;color:#64748b">${gallery.length} moments</span>
+</header>
+<div class="filters">${filterBtns}</div>
+<div class="grid" id="pg">${cardHtml}</div>
+
+<!-- Lightbox -->
+<div id="lb">
+    <button id="lb-close" onclick="__lbClose()" aria-label="Close">✕</button>
+    <div id="lb-inner" style="position:relative">
+        <img id="lb-img" src="" alt="">
+        <button class="lb-nav" id="lb-prev" onclick="__lbNav(-1)">‹</button>
+        <button class="lb-nav" id="lb-next" onclick="__lbNav(1)">›</button>
+        <div style="display:flex;align-items:center;gap:1rem;margin-top:0.5rem;justify-content:space-between;width:100%;flex-wrap:wrap">
+            <div>
+                <div id="lb-title" style="font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:1.1rem;color:#fff"></div>
+                <div id="lb-cap" style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem">
+                <span id="lb-counter"></span>
+                <button id="lb-done" onclick="__lbClose()">Done Viewing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const __data = ${JSON.stringify(gallery)};
+let __cur = 0, __visible = [...__data];
+
+function __filterAll(cat, btn) {
+    document.querySelectorAll('.all-photos-filter').forEach(b => {
+        b.style.background = 'transparent'; b.style.color = '#cbd5e1';
+    });
+    btn.style.background = '#C5A880'; btn.style.color = '#060B18';
+    __visible = cat === 'all' ? [...__data] : __data.filter(x => x.category.toLowerCase() === cat.toLowerCase());
+    document.getElementById('pg').innerHTML = __visible.map((item, i) => \`
+        <div class="photo-card" onclick="__lightbox(\${i})">
+            <img src="\${item.image}" alt="\${item.title}" loading="lazy">
+            <div class="photo-overlay">
+                <span style="font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;display:block;margin-bottom:0.25rem">\${item.category}</span>
+                <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;font-weight:700;color:#fff">\${item.title}</h3>
+                <p style="font-size:0.75rem;color:#cbd5e1;margin-top:0.25rem">\${item.caption}</p>
+            </div>
+        </div>\`).join('');
+}
+
+function __lightbox(idx) {
+    __cur = idx;
+    __lbShow();
+}
+function __lbShow() {
+    const item = __visible[__cur];
+    if (!item) return;
+    document.getElementById('lb-img').src = item.image;
+    document.getElementById('lb-title').textContent = item.title;
+    document.getElementById('lb-cap').textContent = item.caption;
+    document.getElementById('lb-counter').textContent = (__cur+1) + ' / ' + __visible.length;
+    const done = document.getElementById('lb-done');
+    done.style.display = __cur === __visible.length - 1 ? '' : 'none';
+    document.getElementById('lb').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function __lbNav(dir) {
+    __cur = (__cur + dir + __visible.length) % __visible.length;
+    __lbShow();
+}
+function __lbClose() {
+    document.getElementById('lb').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('lb').classList.contains('open')) return;
+    if (e.key === 'ArrowLeft') __lbNav(-1);
+    if (e.key === 'ArrowRight') __lbNav(1);
+    if (e.key === 'Escape') __lbClose();
+});
+document.getElementById('lb').addEventListener('click', e => { if (e.target === document.getElementById('lb')) __lbClose(); });
+</script>
+</body></html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
 };
 
 function renderBeyondSchool() {
@@ -363,9 +528,6 @@ function renderBeyondSchool() {
                         </div>
                     `).join('')}
                 </div>
-            </div>
-            <div class="h-32 rounded-xl overflow-hidden border border-slate-800/80">
-                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500">
             </div>
         </div>
     `).join('');
@@ -533,6 +695,8 @@ function updateLightboxContent() {
     document.getElementById('lightbox-title').textContent = item.title;
     document.getElementById('lightbox-caption').textContent = item.caption;
     document.getElementById('lightbox-counter').textContent = `${activeLightboxIndex + 1} / ${filtered.length}`;
+    const doneBtn = document.getElementById('lightbox-done-btn');
+    if (doneBtn) doneBtn.style.display = activeLightboxIndex === filtered.length - 1 ? '' : 'none';
 }
 
 window.lightboxPrev = function() {
