@@ -223,62 +223,7 @@ const PRINCIPAL_DATA = {
     lifeAtSchool: {
         heading: "A School is a Living Community.",
         subheading: "Unscripted, genuine photographs celebrating the daily energy, warmth, and joy of learning.",
-        gallery: [
-            {
-                category: "Classroom",
-                title: "Inquiry in Action",
-                image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=900",
-                caption: "Classroom interactions where questioning is welcomed and understanding is built collaboratively."
-            },
-            {
-                category: "Morning Assembly",
-                title: "Morning Gathering & Reflection",
-                image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=900",
-                caption: "Unifying the school in collective purpose, moral values, and positive daily intentions."
-            },
-            {
-                category: "Teacher Interaction",
-                title: "Faculty Mentoring & Co-Planning",
-                image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=900",
-                caption: "Teachers exchanging pedagogical ideas and reviewing student progress collaboratively."
-            },
-            {
-                category: "Student Projects",
-                title: "Science & Innovation Showcases",
-                image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=900",
-                caption: "Translating textbook theories into tangible models, inventions, and creative problem solving."
-            },
-            {
-                category: "Events",
-                title: "Cultural Galas & Public Speaking",
-                image: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&q=80&w=900",
-                caption: "Giving young individuals the poise, confidence, and voice to express themselves."
-            },
-            {
-                category: "Sports",
-                title: "Track, Tenacity & Team Spirit",
-                image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=900",
-                caption: "Building stamina, resilience, and gracious sportsmanship under open skies."
-            },
-            {
-                category: "Trips",
-                title: "Outdoor & Nature Explorations",
-                image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=900",
-                caption: "Classrooms without walls: students observing environmental ecology firsthand."
-            },
-            {
-                category: "Celebrations",
-                title: "Graduation & Milestones",
-                image: "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?auto=format&fit=crop&q=80&w=900",
-                caption: "Celebrating students stepping into the world with integrity, knowledge, and confidence."
-            },
-            {
-                category: "Principal with Students",
-                title: "Listening & Mentoring Conversations",
-                image: "assets/images/varsha_phukane_candid.jpg",
-                caption: "Connecting warmly with students to listen to their aspirations and encourage their dreams."
-            }
-        ]
+        gallery: []
     },
 
     // 08 — BEYOND SCHOOL
