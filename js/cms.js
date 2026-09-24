@@ -111,7 +111,7 @@
             ${e.cover ? `<img src="${esc(e.cover)}" alt="${esc(e.title)}" style="width:100%;border-radius:0.75rem;margin-bottom:1.25rem">` : ''}
             ${(e.description || '').split(/\n{2,}/).filter(Boolean).map(p => `<p class="mb-4 text-slate-700 leading-relaxed">${esc(p).replace(/\n/g, '<br>')}</p>`).join('')}
             ${vid ? embed(vid) : ''}
-            ${photos ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.6rem;margin-top:1.25rem">${photos}</div>` : ''}`);
+            ${photos ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:1.25rem">${photos}</div>` : ''}`);
     };
 
     window.openEventLightbox = function(startIdx) {
