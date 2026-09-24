@@ -16,5 +16,8 @@
     "varsha-phukane"
   ],
   "author": "Varsha Phukane",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
 }
