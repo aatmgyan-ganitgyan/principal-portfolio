@@ -116,7 +116,9 @@
     function renderEvents() {
         const grid = document.getElementById('events-grid');
         if (!grid) return;
-        grid.innerHTML = events.map(e => `
+        const EVENTS_LIMIT = 6;
+        const visible = events.slice(0, EVENTS_LIMIT);
+        grid.innerHTML = visible.map(e => `
             <button type="button" class="initiative-editorial" onclick="openEventModal('${esc(e.id)}')" aria-label="Open event: ${esc(e.title)}">
                 <div class="initiative-media">${e.cover ? `<img src="${esc(e.cover)}" alt="" loading="lazy">` : ''}</div>
                 <div class="initiative-body">
@@ -126,7 +128,54 @@
                     <span class="t-label initiative-link">View event${(e.photos || []).length ? ` · ${e.photos.length} photos` : ''}${ytId(e.youtube) ? ' · video' : ''}</span>
                 </div>
             </button>`).join('');
+
+        // View All Events button
+        const existing = grid.parentElement.querySelector('.view-all-events-btn');
+        if (existing) existing.remove();
+        if (events.length > EVENTS_LIMIT) {
+            const btnWrap = document.createElement('div');
+            btnWrap.className = 'view-all-events-btn';
+            btnWrap.style.cssText = 'text-align:center;margin-top:2rem;grid-column:1/-1';
+            btnWrap.innerHTML = `<button onclick="openAllEventsPage()" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;border-radius:999px;border:1.5px solid rgba(146,64,14,.4);color:#78350f;font-size:0.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .2s" onmouseover="this.style.background='#78350f';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#78350f'">
+                View All ${events.length} Events
+            </button>`;
+            grid.parentElement.appendChild(btnWrap);
+        }
     }
+
+    window.openAllEventsPage = function() {
+        const cardHtml = events.map(e => `
+            <button type="button" onclick="parent.openEventModal && parent.openEventModal('${esc(e.id)}')"
+                style="background:#1a1f2e;border:1px solid rgba(255,255,255,.08);border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s;display:flex;flex-direction:column"
+                onmouseover="this.style.borderColor='rgba(197,168,128,.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+                ${e.cover ? `<div style="aspect-ratio:16/9;overflow:hidden"><img src="${esc(e.cover)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>` : ''}
+                <div style="padding:1.25rem;flex:1">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:0.4rem">${esc(fmtDate(e.date))}${e.location ? ' · ' + esc(e.location) : ''}</div>
+                    <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.5rem;line-height:1.3">${esc(e.title)}</h3>
+                    <p style="font-size:0.8rem;color:#94a3b8;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(e.description || '')}</p>
+                </div>
+            </button>`).join('');
+
+        const html = `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All Events — Varsha Phukane</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#060B18;color:#e2e8f0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
+header{background:#0B1326;border-bottom:1px solid rgba(197,168,128,.15);padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;text-decoration:none;transition:color .2s}.back:hover{color:#C5A880}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;padding:1.5rem}</style>
+</head>
+<body>
+<header>
+    <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#C5A880">Events &amp; Celebrations</div>
+    <span style="font-size:0.75rem;color:#64748b">${events.length} events</span>
+</header>
+<div class="grid">${cardHtml}</div>
+</body></html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        window.open(URL.createObjectURL(blob), '_blank');
+    };
 
     function renderVideos(channelUrl) {
         const grid = document.getElementById('videos-grid');
