@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+const { put, list } = require('@vercel/blob');
+
+const CONTENT_FILE = 'content-db.json';
 
 module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -7,21 +8,20 @@ module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
 
-    const filePath = path.join(process.cwd(), 'content.json');
+    const empty = { version: 1, blog: [], photos: [], events: [], videos: [], settings: {} };
 
     if (req.method === 'GET') {
         try {
-            if (fs.existsSync(filePath)) {
-                const data = fs.readFileSync(filePath, 'utf8');
-                return res.status(200).send(data);
-            }
-            return res.status(200).json({ version: 1, blog: [], photos: [], events: [], videos: [], settings: {} });
+            const { blobs } = await list({ prefix: CONTENT_FILE, token: process.env.BLOB_READ_WRITE_TOKEN });
+            if (!blobs || blobs.length === 0) return res.status(200).json(empty);
+            const r = await fetch(blobs[0].url + '?t=' + Date.now());
+            if (!r.ok) return res.status(200).json(empty);
+            const data = await r.json();
+            return res.status(200).json(data);
         } catch (e) {
-            return res.status(500).json({ error: e.message });
+            return res.status(200).json(empty);
         }
     }
 
@@ -30,7 +30,15 @@ module.exports = async (req, res) => {
             const body = req.body || {};
             const content = body.content || body;
             content.updatedAt = new Date().toISOString();
-            fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf8');
+            const json = JSON.stringify(content, null, 2);
+
+            await put(CONTENT_FILE, json, {
+                access: 'public',
+                contentType: 'application/json',
+                addRandomSuffix: false,
+                token: process.env.BLOB_READ_WRITE_TOKEN,
+            });
+
             return res.status(200).json({ success: true, content });
         } catch (e) {
             return res.status(500).json({ error: e.message });
