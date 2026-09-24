@@ -283,33 +283,9 @@ function initLayout() {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setNavH);
 }
 
-function initJourneyCrossfade() {
-    const frame = document.querySelector('.journey-photo-frame');
-    if (!frame) return;
-    if (REDUCED_MOTION) {
-        frame.classList.remove('is-active');
-        return;
-    }
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    frame.classList.add('is-active');
-                } else {
-                    frame.classList.remove('is-active');
-                }
-            });
-        }, { threshold: 0.15 });
-        observer.observe(frame);
-    } else {
-        frame.classList.add('is-active');
-    }
-}
-
 function initMotion() {
     window.__motionReady = true;
     initLayout();
-    initJourneyCrossfade();
     const staggerIds = ['person-cards-container', 'journey-timeline-container', 'philosophy-pillars-container',
         'impact-metrics-container', 'initiatives-container', 'beyond-school-container', 'thoughts-container'];
     staggerIds.forEach(id => {

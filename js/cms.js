@@ -1,4 +1,4 @@
-/* Content added from /admin: blog posts, gallery photos, events, videos and contact settings.
+/* Content added from /admin: blog posts, gallery photos, events, videos, journey photo and contact settings.
    Loads after main.js / enhance.js and merges into the page. If the API is unreachable the
    site simply shows its built-in content. */
 (function () {
@@ -22,6 +22,57 @@
         link.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Admin Login';
         school.after(link);
     })();
+
+    // Journey photo: "at work" frame that turns into "looks up at the camera" (can be replaced in Admin > Settings)
+    function setupJourneyPhoto(working, camera) {
+        const section = document.getElementById('journey');
+        const head = section && section.querySelector('.section-head');
+        if (!head || (!working && !camera) || document.getElementById('journey-photo')) return;
+        const css = document.createElement('style');
+        css.textContent = `
+            #journey.has-photo .section-head { display: grid !important; grid-template-columns: minmax(0, 1fr); grid-template-areas: "text" "photo" "hint"; align-items: end; row-gap: 1.5rem; }
+            #journey.has-photo .section-head > :first-child { grid-area: text; }
+            #journey.has-photo .section-head > :nth-child(2) { grid-area: hint; }
+            .journey-photo { grid-area: photo; position: relative; margin: 0; width: 100%; aspect-ratio: 3 / 2; border-radius: 1rem; overflow: hidden;
+                border: 1px solid rgba(197, 168, 128, 0.3); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7); background: #0B1326; }
+            .journey-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+            .journey-photo .jp-camera { opacity: 0; }
+            .journey-photo.single .jp-camera { opacity: 1; }
+            .journey-photo::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(6,11,24,0) 60%, rgba(6,11,24,0.65) 100%); }
+            .journey-photo figcaption { position: absolute; left: 1rem; bottom: 0.85rem; z-index: 1; color: #E7D5BC; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+            .journey-photo.play img { animation: jpZoom 20s ease-in-out infinite alternate; }
+            .journey-photo.play:not(.single) .jp-camera { animation: jpSwap 10s ease-in-out infinite, jpZoom 20s ease-in-out infinite alternate; }
+            @keyframes jpSwap { 0%, 38% { opacity: 0; } 43%, 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
+            @keyframes jpZoom { from { transform: scale(1); } to { transform: scale(1.045); } }
+            @media (min-width: 1024px) {
+                #journey.has-photo .section-head { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); grid-template-areas: "text photo" "hint photo"; column-gap: clamp(2rem, 1rem + 3vw, 4rem); }
+                .journey-photo { justify-self: end; width: min(100%, calc(48svh * 1.5)); }
+                #journey.has-photo .section-head > :nth-child(2) { justify-self: start; }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .journey-photo .jp-working { opacity: 0; }
+                .journey-photo .jp-camera { opacity: 1; animation: none !important; }
+                .journey-photo img { animation: none !important; }
+            }`;
+        document.head.appendChild(css);
+        const single = !(working && camera);
+        const fig = document.createElement('figure');
+        fig.id = 'journey-photo';
+        fig.className = `journey-photo${single ? ' single' : ''}`;
+        fig.innerHTML = `
+            ${working ? `<img class="jp-working" src="${esc(working)}" alt="Varsha Phukane at work in the principal's office" loading="lazy">` : ''}
+            <img class="jp-camera" src="${esc(camera || working)}" alt="Varsha Phukane at her desk" loading="lazy">
+            <figcaption>Today · Principal’s office</figcaption>`;
+        head.appendChild(fig);
+        section.classList.add('has-photo');
+        const start = () => fig.classList.add('play');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(entries => {
+                if (entries.some(e => e.isIntersecting)) { start(); io.disconnect(); }
+            }, { threshold: 0.35 });
+            io.observe(fig);
+        } else start();
+    }
 
     function openModal(html) {
         const modal = document.getElementById('article-modal');
@@ -122,24 +173,11 @@
     }
 
     async function load() {
-        let c;
+        let c = {};
         try {
             const res = await fetch('/api/content');
-            if (res.ok) {
-                c = await res.json();
-            } else {
-                throw new Error('api fallback');
-            }
-        } catch (e) {
-            try {
-                const res2 = await fetch('/content.json');
-                if (res2.ok) c = await res2.json();
-                else return;
-            } catch (err) {
-                return;
-            }
-        }
-        if (!c) return;
+            if (res.ok) c = await res.json();
+        } catch (e) { /* offline: built-in content only */ }
         const D = window.PRINCIPAL_DATA || (typeof PRINCIPAL_DATA !== 'undefined' ? PRINCIPAL_DATA : null);
         if (!D) return;
 
@@ -150,14 +188,8 @@
             if (s.schoolWebsite) D.signature.schoolWebsite = s.schoolWebsite;
             renderSignature();
         }
-        if (s.journeyWorking && !s.journeyWorking.includes('dsc-0831')) {
-            const j1 = document.querySelector('.journey-photo-1');
-            if (j1) j1.src = s.journeyWorking;
-        }
-        if (s.journeyCamera && !s.journeyCamera.includes('dsc-0829')) {
-            const j2 = document.querySelector('.journey-photo-2');
-            if (j2) j2.src = s.journeyCamera;
-        }
+
+        setupJourneyPhoto(s.journeyWorking || '/img/journey-1.avif', s.journeyCamera || '/img/journey-2.avif');
 
         const posts = (c.blog || []).filter(p => p.published !== false).sort(byDate).map(p => ({
             id: `post-${p.id}`,

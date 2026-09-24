@@ -88,7 +88,7 @@ header.top small { display:block; color:var(--mute); font-size:.75rem; }
     <div class="field"><label for="p">Password</label><input type="password" id="p" name="password" autocomplete="current-password" required></div>
     <div class="err" id="login-err"></div>
     <button class="btn primary" style="width:100%" type="submit">Log in</button>
-    <p style="margin:1.25rem 0 0;font-size:.85rem"><a href="/">? Back to website</a></p>
+    <p style="margin:1.25rem 0 0;font-size:.85rem"><a href="/">‚Üê Back to website</a></p>
   </form>
 </section>
 
@@ -124,7 +124,7 @@ const PHOTO_CATEGORIES = ['Classroom', 'Morning Assembly', 'Teacher Interaction'
 
 const COLLECTIONS = {
   blog: {
-    title: 'Blog', noun: 'post', intro: 'Articles for ìThe Principalís Voiceî. Newest posts appear first.',
+    title: 'Blog', noun: 'post', intro: 'Articles for ‚ÄúThe Principal‚Äôs Voice‚Äù. Newest posts appear first.',
     fields: [
       { k: 'title', label: 'Title', type: 'text', required: true },
       { k: 'date', label: 'Date', type: 'date', required: true },
@@ -135,7 +135,7 @@ const COLLECTIONS = {
       { k: 'cover', label: 'Cover photo (optional)', type: 'image' },
       { k: 'published', label: 'Show on website', type: 'checkbox', default: true },
     ],
-    summary: i => [i.title, `${fmtDate(i.date)}${i.published === false ? ' ∑ Hidden' : ''}`, i.cover],
+    summary: i => [i.title, `${fmtDate(i.date)}${i.published === false ? ' ¬∑ Hidden' : ''}`, i.cover],
   },
   events: {
     title: 'Events', noun: 'event', intro: 'School events with a cover photo, a gallery and an optional YouTube video.',
@@ -146,22 +146,22 @@ const COLLECTIONS = {
       { k: 'description', label: 'About the event', type: 'textarea', rows: 6 },
       { k: 'cover', label: 'Cover photo', type: 'image' },
       { k: 'photos', label: 'More photos (gallery)', type: 'images' },
-      { k: 'youtube', label: 'YouTube video link (optional)', type: 'url', placeholder: 'https://youtu.be/Ö' },
+      { k: 'youtube', label: 'YouTube video link (optional)', type: 'url', placeholder: 'https://youtu.be/‚Ä¶' },
       { k: 'published', label: 'Show on website', type: 'checkbox', default: true },
     ],
-    summary: i => [i.title, `${fmtDate(i.date)}${i.location ? ' ∑ ' + i.location : ''}${(i.photos || []).length ? ' ∑ ' + i.photos.length + ' photos' : ''}${i.published === false ? ' ∑ Hidden' : ''}`, i.cover],
+    summary: i => [i.title, `${fmtDate(i.date)}${i.location ? ' ¬∑ ' + i.location : ''}${(i.photos || []).length ? ' ¬∑ ' + i.photos.length + ' photos' : ''}${i.published === false ? ' ¬∑ Hidden' : ''}`, i.cover],
   },
   videos: {
     title: 'Videos', noun: 'video', intro: 'Single YouTube videos. Videos from the channel in Settings appear automatically.',
     fields: [
-      { k: 'url', label: 'YouTube link', type: 'url', required: true, placeholder: 'https://www.youtube.com/watch?v=Ö' },
+      { k: 'url', label: 'YouTube link', type: 'url', required: true, placeholder: 'https://www.youtube.com/watch?v=‚Ä¶' },
       { k: 'title', label: 'Title', type: 'text', required: true },
       { k: 'date', label: 'Date', type: 'date' },
     ],
     summary: i => [i.title, fmtDate(i.date), ytId(i.url) ? `https://i.ytimg.com/vi/${ytId(i.url)}/mqdefault.jpg` : ''],
   },
   photos: {
-    title: 'Photos', noun: 'photo', intro: 'Photos for the ìLife @ Schoolî gallery.',
+    title: 'Photos', noun: 'photo', intro: 'Photos for the ‚ÄúLife @ School‚Äù gallery.',
     fields: [
       { k: 'url', label: 'Photo', type: 'image', required: true },
       { k: 'title', label: 'Title', type: 'text' },
@@ -251,7 +251,7 @@ function render() {
       <div class="row">${img ? `<img src="${esc(img)}" alt="">` : '<div class="ph"></div>'}
         <div class="meta"><b>${esc(t)}</b><span>${esc(sub)}</span></div>
         <div class="acts"><button class="btn small" data-edit="${i.id}">Edit</button><button class="btn small danger" data-del="${i.id}">Delete</button></div>
-      </div>`; }).join('') : `<div class="empty">Nothing here yet. Click ìAdd ${c.noun}î to start.</div>`}</div>`;
+      </div>`; }).join('') : `<div class="empty">Nothing here yet. Click ‚ÄúAdd ${c.noun}‚Äù to start.</div>`}</div>`;
   $('[data-new]').onclick = () => openEditor(tab);
   $('#panel').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openEditor(tab, content[tab].find(i => i.id === b.dataset.edit)));
   $('#panel').querySelectorAll('[data-del]').forEach(b => b.onclick = () => remove(tab, b.dataset.del));
@@ -259,7 +259,7 @@ function render() {
 
 async function remove(kind, id) {
   const item = content[kind].find(i => i.id === id);
-  if (!confirm(`Delete ì${item.title || 'this ' + COLLECTIONS[kind].noun}î? This cannot be undone.`)) return;
+  if (!confirm(`Delete ‚Äú${item.title || 'this ' + COLLECTIONS[kind].noun}‚Äù? This cannot be undone.`)) return;
   content[kind] = content[kind].filter(i => i.id !== id);
   await save('Deleted.');
 }
@@ -288,7 +288,7 @@ function renderPhotos() {
     const cat = $('#bulk-cat').value, title = $('#bulk-title').value.trim();
     let done = 0;
     for (const f of files) {
-      $('#bulk-status').textContent = `Uploading ${done + 1} of ${files.length}Ö`;
+      $('#bulk-status').textContent = `Uploading ${done + 1} of ${files.length}‚Ä¶`;
       try { const url = await uploadFile(f); content.photos.push({ id: uid(), url, title, caption: '', category: cat, date: today() }); done++; }
       catch (err) { toast(`${f.name}: ${err.message}`, true); }
     }
@@ -305,22 +305,22 @@ function renderSettings() {
     <form class="card" id="settings-form">
       <div class="field"><label>YouTube channel</label><input type="text" name="youtubeChannel" value="${esc(s.youtubeChannel)}" placeholder="https://www.youtube.com/@channelname">
         <div class="hint">Paste the channel link. Its latest videos appear on the website automatically (refreshed every 30 minutes).</div></div>
-      <div class="field"><label>Journey photos (ìFrom Classroom to Leadershipî)</label>
+      <div class="field"><label>Journey photos (‚ÄúFrom Classroom to Leadership‚Äù)</label>
         <div class="two">
-          <div><div class="hint" style="margin:0 0 .4rem">1 ∑ At work (shown first)</div><div class="drop" data-jp="journeyWorking">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyWorking"></div></div>
-          <div><div class="hint" style="margin:0 0 .4rem">2 ∑ Looking at the camera</div><div class="drop" data-jp="journeyCamera">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyCamera"></div></div>
+          <div><div class="hint" style="margin:0 0 .4rem">1 ¬∑ At work (shown first)</div><div class="drop" data-jp="journeyWorking">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyWorking"></div></div>
+          <div><div class="hint" style="margin:0 0 .4rem">2 ¬∑ Looking at the camera</div><div class="drop" data-jp="journeyCamera">Tap to choose</div><div class="thumbs" data-jp-thumb="journeyCamera"></div></div>
         </div>
         <input type="file" accept="image/*" class="hidden" id="jp-file">
         <div class="hint">The website shows photo 1, then gently changes to photo 2, like a moment caught while working. Saved as soon as you choose a photo.</div></div>
       <div class="field"><label>Email</label><input type="email" name="email" value="${esc(s.email)}" placeholder="name@school.edu"></div>
-      <div class="field"><label>LinkedIn</label><input type="url" name="linkedin" value="${esc(s.linkedin)}" placeholder="https://www.linkedin.com/in/Ö"></div>
-      <div class="field"><label>School website</label><input type="url" name="schoolWebsite" value="${esc(s.schoolWebsite)}" placeholder="https://Ö"></div>
+      <div class="field"><label>LinkedIn</label><input type="url" name="linkedin" value="${esc(s.linkedin)}" placeholder="https://www.linkedin.com/in/‚Ä¶"></div>
+      <div class="field"><label>School website</label><input type="url" name="schoolWebsite" value="${esc(s.schoolWebsite)}" placeholder="https://‚Ä¶"></div>
       <button class="btn primary" type="submit">Save settings</button>
     </form>`;
   let jpKey = null;
   const drawJp = () => ['journeyWorking', 'journeyCamera'].forEach(k => {
     const box = $(`[data-jp-thumb="${k}"]`); const u = content.settings[k];
-    box.innerHTML = u ? `<figure><img src="${esc(u)}" alt=""><button type="button" data-jp-rm="${k}" aria-label="Remove">◊</button></figure>` : '';
+    box.innerHTML = u ? `<figure><img src="${esc(u)}" alt=""><button type="button" data-jp-rm="${k}" aria-label="Remove">√ó</button></figure>` : '';
     const rm = box.querySelector('[data-jp-rm]');
     if (rm) rm.onclick = async () => { delete content.settings[k]; await save('Photo removed.'); };
   });
@@ -328,7 +328,7 @@ function renderSettings() {
   document.querySelectorAll('[data-jp]').forEach(d => d.onclick = () => { jpKey = d.dataset.jp; $('#jp-file').click(); });
   $('#jp-file').onchange = async e => {
     const file = e.target.files[0]; if (!file || !jpKey) return;
-    const drop = $(`[data-jp="${jpKey}"]`); drop.textContent = 'UploadingÖ';
+    const drop = $(`[data-jp="${jpKey}"]`); drop.textContent = 'Uploading‚Ä¶';
     try { content.settings[jpKey] = await uploadFile(file); await save('Journey photo updated.'); }
     catch (err) { toast(err.message, true); drop.textContent = 'Tap to choose'; }
     e.target.value = '';
@@ -355,7 +355,7 @@ function openEditor(kind, item) {
     const box = sheet.querySelector(`[data-thumbs="${f.k}"]`);
     const draw = () => {
       const list = f.type === 'images' ? imgs[f.k] : (imgs[f.k] ? [imgs[f.k]] : []);
-      box.innerHTML = list.map((u, n) => `<figure><img src="${esc(u)}" alt=""><button type="button" data-rm="${n}" aria-label="Remove">◊</button></figure>`).join('');
+      box.innerHTML = list.map((u, n) => `<figure><img src="${esc(u)}" alt=""><button type="button" data-rm="${n}" aria-label="Remove">√ó</button></figure>`).join('');
       box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { if (f.type === 'images') imgs[f.k].splice(+b.dataset.rm, 1); else imgs[f.k] = ''; draw(); });
     };
     draw();
@@ -364,7 +364,7 @@ function openEditor(kind, item) {
     input.onchange = async () => {
       const files = [...input.files]; const status = sheet.querySelector(`[data-status="${f.k}"]`);
       for (const [n, file] of files.entries()) {
-        status.textContent = `Uploading ${n + 1} of ${files.length}Ö`;
+        status.textContent = `Uploading ${n + 1} of ${files.length}‚Ä¶`;
         try { const url = await uploadFile(file); if (f.type === 'images') imgs[f.k].push(url); else imgs[f.k] = url; draw(); }
         catch (err) { toast(err.message, true); }
       }
@@ -378,7 +378,7 @@ function openEditor(kind, item) {
       if (f.type === 'image' || f.type === 'images') data[f.k] = imgs[f.k];
       else if (f.type === 'checkbox') data[f.k] = e.target.elements[f.k].checked;
       else data[f.k] = e.target.elements[f.k].value.trim();
-      if (f.required && (!data[f.k] || (Array.isArray(data[f.k]) && !data[f.k].length))) { toast(`Please fill in ì${f.label}î.`, true); return; }
+      if (f.required && (!data[f.k] || (Array.isArray(data[f.k]) && !data[f.k].length))) { toast(`Please fill in ‚Äú${f.label}‚Äù.`, true); return; }
     }
     if (kind === 'videos' && !ytId(data.url)) { toast('That does not look like a YouTube video link.', true); return; }
     const btn = e.target.querySelector('[type=submit]'); btn.disabled = true;
@@ -411,4 +411,3 @@ function fieldHtml(f, v) {
 </script>
 </body>
 </html>
-
