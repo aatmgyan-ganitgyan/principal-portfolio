@@ -211,7 +211,7 @@
 body{background:#F8F7F4;color:#1e293b;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 1px 8px rgba(0,0,0,.06)}
 .back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;text-decoration:none}.back:hover{color:#A08257}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;padding:1.5rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;padding:1.5rem}
 .card{background:#fff;border:1px solid #e8e6e0;border-radius:0.875rem;overflow:hidden;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card:hover{border-color:#C5A880;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
 .card-img{aspect-ratio:16/9;overflow:hidden;background:#f1efe8}
