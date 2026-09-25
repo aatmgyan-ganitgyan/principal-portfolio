@@ -534,11 +534,14 @@ function renderBeyondSchool() {
 }
 
 function renderThoughts() {
-    const articles = PRINCIPAL_DATA.thoughts.articles;
+    const articles = [...PRINCIPAL_DATA.thoughts.articles].sort((a, b) => String(b.date).localeCompare(String(a.date)));
     const container = document.getElementById('thoughts-container');
     if (!container) return;
 
-    container.innerHTML = articles.map(article => `
+    const ARTICLE_LIMIT = 6;
+    const visible = articles.slice(0, ARTICLE_LIMIT);
+
+    container.innerHTML = visible.map(article => `
         <article class="card-pad rounded-2xl bg-white shadow-sm hover:shadow-lg border border-slate-200 transition-shadow flex flex-col justify-between cursor-pointer group"
                  onclick="openArticleModal('${article.id}')">
             <div>
@@ -559,7 +562,107 @@ function renderThoughts() {
             </div>
         </article>
     `).join('');
+
+    // Remove existing View All button
+    const existingBtn = container.parentElement.querySelector('.view-all-articles-btn');
+    if (existingBtn) existingBtn.remove();
+
+    if (articles.length > ARTICLE_LIMIT) {
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'view-all-articles-btn text-center mt-8';
+        btnWrap.style.cssText = 'grid-column:1/-1';
+        btnWrap.innerHTML = `<button onclick="openAllArticlesPage()" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;border-radius:999px;border:1.5px solid rgba(146,64,14,.4);color:#78350f;font-size:0.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .2s" onmouseover="this.style.background='#78350f';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#78350f'">
+            View All ${articles.length} Articles
+        </button>`;
+        container.parentElement.appendChild(btnWrap);
+    }
+
+    if (window.lucide) lucide.createIcons();
 }
+
+window.openAllArticlesPage = function() {
+    const articles = [...PRINCIPAL_DATA.thoughts.articles].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    const cardsHtml = articles.map(article => `
+        <div onclick="__openArt('${article.id}')" style="background:#fff;border:1px solid #e8e6e0;border-radius:0.875rem;padding:1.5rem;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:box-shadow .2s,border-color .2s" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,.1)';this.style.borderColor='#C5A880'" onmouseout="this.style.boxShadow='';this.style.borderColor='#e8e6e0'">
+            <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+                    <span style="font-size:0.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#fef3c7;color:#92400e;border:1px solid #fde68a;padding:0.2rem 0.6rem;border-radius:999px">${article.date}</span>
+                    <span style="font-size:0.65rem;color:#94a3b8">${article.readTime}</span>
+                </div>
+                <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;color:#1e293b;line-height:1.3;margin-bottom:0.6rem">${article.title}</h3>
+                <p style="font-size:0.82rem;color:#64748b;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${article.description}</p>
+            </div>
+            <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid #f1efe8;font-size:0.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e">Read Article →</div>
+        </div>`).join('');
+
+    const artData = JSON.stringify(articles);
+
+    const html = `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All Articles — Varsha Phukane</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#F8F7F4;color:#1e293b;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh}
+header{background:#fff;border-bottom:1px solid #e2e0d8;padding:1rem 1.5rem;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.back{font-size:0.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;text-decoration:none}.back:hover{color:#A08257}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;padding:1.5rem}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+@media(min-width:769px) and (max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
+/* Article modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:1.25rem;max-width:680px;width:100%;max-height:92vh;overflow-y:auto;padding:2rem;position:relative}
+.modal-x{position:absolute;top:1rem;right:1rem;background:#f1efe8;border:none;border-radius:50%;width:2rem;height:2rem;cursor:pointer;font-size:1rem;color:#64748b;display:flex;align-items:center;justify-content:center}.modal-x:hover{background:#C5A880;color:#fff}
+.modal-date{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#92400e;margin-bottom:0.5rem}
+.modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:800;color:#1e293b;line-height:1.2;margin-bottom:1rem}
+.modal-body{font-size:0.9rem;color:#475569;line-height:1.8}
+.modal-body p{margin-bottom:0.75rem}
+.done-btn{display:block;margin:1.5rem auto 0;padding:0.5rem 1.5rem;border-radius:999px;background:#1e293b;color:#fff;font-weight:700;font-size:0.75rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none}
+</style></head>
+<body>
+<header>
+  <a href="javascript:window.close()" class="back">← Back to Portfolio</a>
+  <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#A08257">The Principal's Voice</div>
+  <span style="font-size:0.75rem;color:#94a3b8">${articles.length} articles</span>
+</header>
+<div class="grid">${cardsHtml}</div>
+
+<div class="modal-bg" id="art-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeArt()">✕</button>
+    <div class="modal-date" id="art-date"></div>
+    <div class="modal-title" id="art-title"></div>
+    <div class="modal-body" id="art-body"></div>
+    <button class="done-btn" onclick="closeArt()">Done Reading</button>
+  </div>
+</div>
+
+<script>
+var ARTS = ${artData};
+function __openArt(id) {
+  var a = ARTS.find(function(x){ return x.id === id; });
+  if (!a) return;
+  document.getElementById('art-date').textContent = a.date + (a.readTime ? ' · ' + a.readTime : '');
+  document.getElementById('art-title').textContent = a.title;
+  var body = (a.content || a.description || '').replace(/###\\s*/g,'').replace(/\\*\\*(.*?)\\*\\*/g,'<strong>$1</strong>').replace(/\\*(.*?)\\*/g,'<em>$1</em>');
+  document.getElementById('art-body').innerHTML = body.split(/\\n{2,}/).filter(Boolean).map(function(p){ return '<p>'+p.replace(/\\n/g,'<br>')+'</p>'; }).join('');
+  document.getElementById('art-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeArt() {
+  document.getElementById('art-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('art-modal').addEventListener('click', function(e){ if(e.target===this) closeArt(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeArt(); });
+</script>
+</body></html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    window.open(URL.createObjectURL(blob), '_blank');
+};
 
 function renderSignature() {
     const sig = PRINCIPAL_DATA.signature;
