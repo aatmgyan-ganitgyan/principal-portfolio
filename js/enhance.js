@@ -128,8 +128,11 @@ function renderLifeAtSchool() {
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
 
+    const PHOTO_LIMIT = 6;
+    const visible = filtered.slice(0, PHOTO_LIMIT);
+
     const shapes = ['4 / 5', '4 / 3', '1 / 1', '3 / 4', '16 / 11', '4 / 5', '4 / 3', '1 / 1', '3 / 4'];
-    container.innerHTML = filtered.map((item, idx) => `
+    container.innerHTML = visible.map((item, idx) => `
         <button type="button" class="photo-card rounded-xl overflow-hidden relative group" onclick="openLightbox(${idx})" aria-label="Open photo: ${item.title}">
             <img src="${item.image}" alt="${item.title}" loading="lazy" style="aspect-ratio:${shapes[idx % shapes.length]}; object-fit: cover; width: 100%;">
             <div class="photo-overlay">
@@ -139,6 +142,19 @@ function renderLifeAtSchool() {
             </div>
         </button>
     `).join('');
+
+    // Remove existing View All button
+    const existingBtn = container.parentElement.querySelector('.view-all-photos-btn');
+    if (existingBtn) existingBtn.remove();
+
+    if (filtered.length > PHOTO_LIMIT) {
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'view-all-photos-btn text-center mt-8';
+        btnWrap.innerHTML = `<button onclick="openAllPhotosPage()" class="btn-outline-gold inline-flex items-center gap-2 px-8 py-3 text-sm">
+            <span>View All ${filtered.length} Photos</span>
+        </button>`;
+        container.parentElement.appendChild(btnWrap);
+    }
 }
 
 function renderBeyondSchool() {
