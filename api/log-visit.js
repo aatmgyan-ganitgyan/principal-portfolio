@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
             ref: req.body?.ref || '',
             ua: req.headers['user-agent'] || '',
             country: req.headers['x-vercel-ip-country'] || '',
-            city: req.headers['x-vercel-ip-city'] || '',
+            city: decodeURIComponent(req.headers['x-vercel-ip-city'] || ''),
             region: req.headers['x-vercel-ip-country-region'] || '',
         };
 
