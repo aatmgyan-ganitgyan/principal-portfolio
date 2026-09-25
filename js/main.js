@@ -687,16 +687,17 @@ function updateLightboxContent() {
     const filtered = currentCategory === 'all'
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
+    const visible = filtered.slice(0, 6);
 
-    const item = filtered[activeLightboxIndex];
+    const item = visible[activeLightboxIndex];
     if (!item) return;
 
     document.getElementById('lightbox-img').src = item.image;
     document.getElementById('lightbox-title').textContent = item.title;
     document.getElementById('lightbox-caption').textContent = item.caption;
-    document.getElementById('lightbox-counter').textContent = `${activeLightboxIndex + 1} / ${filtered.length}`;
+    document.getElementById('lightbox-counter').textContent = `${activeLightboxIndex + 1} / ${visible.length}`;
     const doneBtn = document.getElementById('lightbox-done-btn');
-    if (doneBtn) doneBtn.style.display = activeLightboxIndex === filtered.length - 1 ? '' : 'none';
+    if (doneBtn) doneBtn.style.display = activeLightboxIndex === visible.length - 1 ? '' : 'none';
 }
 
 window.lightboxPrev = function() {
@@ -704,8 +705,11 @@ window.lightboxPrev = function() {
     const filtered = currentCategory === 'all'
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
-    activeLightboxIndex = (activeLightboxIndex - 1 + filtered.length) % filtered.length;
-    updateLightboxContent();
+    const visible = filtered.slice(0, 6);
+    if (activeLightboxIndex > 0) {
+        activeLightboxIndex--;
+        updateLightboxContent();
+    }
 };
 
 window.lightboxNext = function() {
@@ -713,8 +717,11 @@ window.lightboxNext = function() {
     const filtered = currentCategory === 'all'
         ? gallery
         : gallery.filter(item => item.category.toLowerCase() === currentCategory.toLowerCase());
-    activeLightboxIndex = (activeLightboxIndex + 1) % filtered.length;
-    updateLightboxContent();
+    const visible = filtered.slice(0, 6);
+    if (activeLightboxIndex < visible.length - 1) {
+        activeLightboxIndex++;
+        updateLightboxContent();
+    }
 };
 
 window.openContactModal = function() {
